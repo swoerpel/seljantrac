@@ -1,1 +1,65 @@
 /* You can add global styles to this file, and also import other style files */
+$color-accent: #1DB954;
+$color-dark: #282828;
+$color-medium-dark: #585858;
+$color-medium: #979797;
+$color-medium-light: #dadada;
+$color-light: #ffffff;
+
+:root {
+    --color-accent: #1DB954;
+    --color-dark: #282828;
+    --color-medium-dark: #585858;
+    --color-medium: #979797;
+    --color-medium-light: #dadada;
+    --color-light: #ffffff;
+
+    --xs: 0.5rem;
+    --s: 1.25rem;
+    --m: 2rem;
+    --l: 4rem;
+    --xl: 8rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+
+body { 
+    font-weight: 400;
+    line-height: 1.6 !important;
+    margin: 0; 
+    min-height: 100vh;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: white;
+
+}
+
+.button{
+    background-color: var(--color-accent);
+    color: var(--color-light);
+    font-size: var(--m);
+    &:hover{
+        cursor: pointer;
+    }
+    &:active{
+        background-color: var(--color-medium);
+        color: var(--color-dark);
+        transform: translateY(2px);
+    }
+}

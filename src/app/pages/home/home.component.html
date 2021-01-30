@@ -1,0 +1,9 @@
+<div class="header">
+    <button mat-raised-button (click)="createItem()" class="button">Create</button>
+</div>
+<app-item-list (itemSelected)="itemSelected($event)" 
+               [data]="mockItemData">
+</app-item-list>
+<div class="footer">
+    <button mat-raised-button class="button">Submit</button>
+</div>

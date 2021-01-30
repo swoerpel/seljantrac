@@ -1,0 +1,12 @@
+:host{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+tr:nth-child(even) {
+    background-color: var(--color-medium-light);
+}
+
+.row{
+    cursor: pointer;
+}
