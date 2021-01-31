@@ -14,11 +14,11 @@ export const environment = {
     measurementId: "G-CW2QDZ499S"
   },
   firebase_auth: {
-    // authGuardFallbackURL: 'login',
-    // authGuardLoggedInURL: 'tournament-list',
-    // guardProtectedRoutesUntilEmailIsVerified: false,
-    // enableEmailVerification: false, 
-    // passwordMinLength: 8
+    authGuardFallbackURL: 'login',
+    authGuardLoggedInURL: 'create',
+    guardProtectedRoutesUntilEmailIsVerified: false,
+    enableEmailVerification: false, 
+    passwordMinLength: 8
   }
 };
 

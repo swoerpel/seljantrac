@@ -20,13 +20,15 @@ import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 import { environment } from 'src/environments/environment';
 import { CreateOrderComponent } from './pages/create-order/create-order.component';
 import { MaterialModule } from './shared/modules/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { customerReducer } from './state/customer/customer.reducer';
 import { CustomerEffects } from './state/customer/customer.effects';
 import { materialReducer } from './state/material/material.reducer';
 import { MaterialEffects } from './state/material/material.effects';
 import { userReducer } from './state/user/user.reducer';
 import { UserEffects } from './state/user/user.effects';
+import { LoginComponent } from './pages/login/login.component';
+import { SnackbarErrorComponent } from './components/error-snackbar/error-snackbar.component';
 
 const stateSlices = {
   user: userReducer,
@@ -42,6 +44,8 @@ const stateEffects = [
   MaterialEffects
 ]
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,12 +55,17 @@ const stateEffects = [
     HeaderComponent,
     ItemListComponent,
     CreateOrderComponent,
+    LoginComponent,
+    SnackbarErrorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule, 
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    // NgxAuthFirebaseUIModule.forRoot(environment.firebase,() => 'calcutta_factory',environment.firebase_auth),
+    NgxAuthFirebaseUIModule.forRoot(environment.firebase,() => 'seljantrac_factory',environment.firebase_auth),
     StoreModule.forRoot(stateSlices),
     EffectsModule.forRoot(stateEffects),
     StoreRouterConnectingModule.forRoot(),
@@ -64,10 +73,7 @@ const stateEffects = [
       name: 'seljantrac',
       maxAge: 25,
     }),
-    BrowserAnimationsModule,
     MaterialModule,
-    ReactiveFormsModule,
-    
   ],
   providers: [],
   bootstrap: [AppComponent]

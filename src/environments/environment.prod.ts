@@ -1,17 +1,17 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: "AIzaSyAa-fZUXVeX3HYbTGfWRiQ1R-kSKVMhg28",
-    authDomain: "calcutta-a2e90.firebaseapp.com",
-    databaseURL: "https://calcutta-a2e90.firebaseio.com",
-    projectId: "calcutta-a2e90",
-    storageBucket: "calcutta-a2e90.appspot.com",
-    messagingSenderId: "641372293374",
-    appId: "1:641372293374:web:0c5cab691cdad551837daf"
+    apiKey: "AIzaSyDe1f4AnJdJZNJdni7JYYvIqtMe0SWsGok",
+    authDomain: "seljantrack.firebaseapp.com",
+    projectId: "seljantrack",
+    storageBucket: "seljantrack.appspot.com",
+    messagingSenderId: "940063634074",
+    appId: "1:940063634074:web:8e8919a84095e5b4c8a523",
+    measurementId: "G-CW2QDZ499S"
   },
   firebase_auth: {
     authGuardFallbackURL: 'login',
-    authGuardLoggedInURL: 'tournament-list',
+    authGuardLoggedInURL: 'create',
     guardProtectedRoutesUntilEmailIsVerified: false,
     enableEmailVerification: false, 
     passwordMinLength: 8
