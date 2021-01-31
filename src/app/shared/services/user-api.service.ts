@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Store } from "@ngrx/store";
-import { from, Observable } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { from, Observable, of } from "rxjs";
+import { map, switchMap, tap } from "rxjs/operators";
 import { User } from "../models/User.model";
 
 @Injectable({
@@ -42,13 +42,17 @@ export class UserApiService {
 
     assignUserPrivileges(userId: string): Observable<boolean>{
        return from(this.db.collection<any>('roles').get()).pipe(
-            map((res) =>   {
-                return true;
-                // Object.keys(res.data()).includes(userId))
+            map((res) => {
+                return res.docs.map(r=>r.id).includes(userId);
             })
        );
     }
 
+    getCurrentUser(): Observable<string>{
+        return this.firebaseAuth.authState.pipe(
+            map(({uid})=>uid),
+        )
+    }
 
     loadUsers(): Observable<any[]>{
         return from(this.db.collection<any>('users').get()).pipe(
@@ -60,6 +64,5 @@ export class UserApiService {
             }))
         );
     }
-
 
 }

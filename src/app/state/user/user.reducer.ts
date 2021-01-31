@@ -6,18 +6,14 @@ export interface UserState {
     users: User[],
     currentUserId: string,
     isAdmin: boolean;
-    loginError: any;
-    registerError: any;
-    loadUsersError: any;
+    error: any;
 }
 
 const initialState: UserState = {
     users: [],
     currentUserId: '',
     isAdmin: false,
-    loginError: null,
-    registerError: null,
-    loadUsersError: null,
+    error: null,
 }
 
 export const userReducer = createReducer<UserState>(
@@ -25,60 +21,74 @@ export const userReducer = createReducer<UserState>(
     on(UserPageActions.LoginUser, (state): UserState => {
         return {
             ...state,
-            loginError: null,
+            error: null,
         }
     }),
     on(UserApiActions.LoginUserSuccess, (state, action): UserState => {
         return {
             ...state,
             currentUserId: action.currentUserId,
-            loginError: null,
+            error: null,
         }
     }),
     on(UserApiActions.LoginUserError, (state, action): UserState => {
         return {
             ...state,
-            loginError: action.err
+            error: action.err
         }
     }),
     //==========================================================
     on(UserPageActions.RegisterUser, (state): UserState => {
         return {
             ...state,
-            registerError: null,
+            error: null,
         }
     }),
     on(UserApiActions.RegisterUserSuccess, (state, action): UserState => {
         return {
             ...state,
             currentUserId: action.currentUserId,
-            registerError: null,
+            error: null,
         }
     }),
     on(UserApiActions.RegisterUserError, (state, action): UserState => {
         return {
             ...state,
-            registerError: action.err
+            error: action.err
         }
     }),
     //==========================================================
     on(UserApiActions.LoadUsers, (state): UserState => {
         return {
             ...state,
-            loadUsersError: null,
+            error: null,
         }
     }),
     on(UserApiActions.LoadUsersSuccess, (state, action): UserState => {
         return {
             ...state,
             users: action.users,
-            loadUsersError: null,
+            error: null,
         }
     }),
     on(UserApiActions.LoadUsersError, (state, action): UserState => {
         return {
             ...state,
-            loadUsersError: action.err
+            error: action.err
+        }
+    }),
+    //==========================================================
+    on(UserApiActions.LoadCurrentUserSuccess, (state, action): UserState => {
+        return {
+            ...state,
+            currentUserId: action.currentUserId,
+            error: null,
+        }
+    }),
+    on(UserApiActions.LoadCurrentUserError, (state, action): UserState => {
+        return {
+            ...state,
+            error: action.err
         }
     }),
     //==========================================================
@@ -92,6 +102,7 @@ export const userReducer = createReducer<UserState>(
         return {
             ...state,
             currentUserId: null,
+            error: null,
         }
     }),
 );

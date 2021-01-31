@@ -10,7 +10,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {

@@ -1,7 +1,9 @@
-import {createAction, props} from '@ngrx/store';
-import { Customer } from 'src/app/shared/models/customer.model';
-import { Order } from 'src/app/shared/models/order.model';
+import { createAction } from '@ngrx/store';
 
-// export const LoadCustomers = createAction(
-//     '[Router] Load Customers',
-// )
+export const LoadCurrentUser = createAction(
+    '[Router] Load Current User',
+)
+
+export const LoadUsers = createAction(
+    '[Router] Load Users',
+)

@@ -1,4 +1,6 @@
 .container {
+    width: 50%;
+    transform: translateX(50%);
     margin-top: 2rem;
     padding: 4rem 2rem;
 }
@@ -10,6 +12,7 @@
 .login-button{
     width: 75%;
     padding: 1rem 2rem;
+
 }
 
 .toggle-register-button{

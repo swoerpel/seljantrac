@@ -51,15 +51,19 @@ body {
 }
 
 .button{
-    background-color: var(--color-accent);
-    color: var(--color-light);
+    background-color: var(--color-accent) !important;
+    color: var(--color-light) !important;
     font-size: var(--m);
     &:hover{
         cursor: pointer;
     }
     &:active{
-        background-color: var(--color-medium);
-        color: var(--color-dark);
+        background-color: var(--color-medium) !important;
+        color: var(--color-dark) !important;
         transform: translateY(2px);
+    }
+    &:disabled{
+        background-color: var(--color-medium-dark) !important;
+        color: var(--color-medium-light) !important;
     }
 }

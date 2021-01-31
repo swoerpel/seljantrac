@@ -45,3 +45,13 @@ export const AssignUserPrivileges = createAction(
     props<{isAdmin: boolean}>()
 )
 
+export const LoadCurrentUserSuccess = createAction(
+    '[User API] Load Current User Success',
+    props<{currentUserId: string}>()
+)
+
+export const LoadCurrentUserError = createAction(
+    '[User API] Load Current User Error',
+    props<{err: any}>()
+)
+

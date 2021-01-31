@@ -16,9 +16,9 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Material</mat-label>
-        <mat-select [formControl]="formGroup.controls.material" >
-          <mat-option *ngFor="let material of (materials$ | async)" [value]="material">
-            {{material}}
+        <mat-select [formControl]="formGroup.controls.materialId" >
+          <mat-option *ngFor="let material of (materials$ | async)" [value]="material.id">
+            {{material.type}}
           </mat-option>
         </mat-select>
     </mat-form-field>
@@ -33,7 +33,7 @@
 </div>
 <mat-form-field appearance="outline">
     <mat-label>Notes</mat-label>
-    <textarea matInput></textarea>
+    <textarea [formControl]="formGroup.controls.notes" matInput></textarea>
 </mat-form-field>
 
 <button [disabled]="formGroup.invalid" class="button" (click)="createOrder()"mat-raised-button>Create</button>

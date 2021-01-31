@@ -4,9 +4,9 @@ export interface Order{
     id: string;
     name: string;
     customerId: string; // customer type
-    creatorId?: string; // user id of creator
-    materialId?: string; // will be material type
-    dueDate?: Date;
+    creatorId: string; // user id of creator
+    materialId: string; // will be material type
+    dueDate: Date;
     notes?: string;
     status?: number; // status enum
     fileIds?: string[];

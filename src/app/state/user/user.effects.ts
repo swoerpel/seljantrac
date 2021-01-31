@@ -21,13 +21,37 @@ export class UserEffects {
         private userApiService: UserApiService,
     ){ }
 
+    init$ = createEffect(():any => {
+        return this.actions$.pipe(
+            ofType(ROOT_EFFECTS_INIT),
+            switchMap(() => [
+                UserRouterActions.LoadCurrentUser(),
+                UserRouterActions.LoadUsers(),
+            ])
+        );
+    })
+
+
+    loadCurrentUser$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(UserRouterActions.LoadCurrentUser),
+            switchMap(()=>{
+                return this.userApiService.getCurrentUser().pipe(
+                    map((currentUserId: string)=>UserApiActions.LoadCurrentUserSuccess({currentUserId})),
+                    catchError((err) => of(UserApiActions.LoadCurrentUserError({err})))
+                )
+            })
+        )
+    })
+
+
     loginUser$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(UserPageActions.LoginUser),
             switchMap((action) => this.userApiService.login(action.email, action.password).pipe(
-                map((res: User) => {
+                map((userId: string) => {
                     this.router.navigate(['/home'])
-                    return UserApiActions.LoginUserSuccess({currentUserId: res.id});
+                    return UserApiActions.LoginUserSuccess({currentUserId: userId});
                 }),
                 catchError((res) => of(UserApiActions.LoginUserError({err: res})))
             )),
@@ -52,6 +76,23 @@ export class UserEffects {
         )
     });
 
+    loadUsers$ = createEffect((): any => {
+        return this.actions$.pipe(
+            ofType(
+                UserRouterActions.LoadUsers,
+                UserApiActions.LoginUserSuccess,
+                UserApiActions.RegisterUserSuccess,
+            ),
+            switchMap((_) => {
+                return this.userApiService.loadUsers().pipe(
+                    map((users: User[]) => UserApiActions.LoadUsersSuccess({users})),
+                    catchError((err) => of(UserApiActions.LoadUsersError({err})))
+                )
+            }),
+            
+        );   
+    });
+
     logoutUser$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(UserPageActions.LogoutUser),
@@ -62,42 +103,23 @@ export class UserEffects {
         )
     });
 
-    // assignUserPrivileges$ = createEffect(() => {
-    //     return this.actions$.pipe(
-    //         ofType(
-    //             UserApiActions.LoginUserSuccess, 
-    //             UserApiActions.RegisterUserSuccess,
-    //             // ROUTER_NAVIGATED,
-    //         ),
-    //         switchMap((action) => {
-    //             return this.userApiService.assignUserPrivileges(action.currentUser.id).pipe(
-    //                 map((isAdmin) => UserApiActions.AssignUserPrivileges({isAdmin: isAdmin})),
-    //             )
-    //         })
-    //     )
-    // })
+    assignUserPrivileges$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(
+                UserApiActions.LoginUserSuccess, 
+                UserApiActions.RegisterUserSuccess,
+                // ROUTER_NAVIGATED,
+            ),
+            switchMap((action) => {
+                return this.userApiService.assignUserPrivileges(action.currentUserId).pipe(
+                    map((isAdmin) => UserApiActions.AssignUserPrivileges({isAdmin: isAdmin})),
+                )
+            })
+        )
+    })
 
 
-    // loadUsers$ = createEffect((): any => {
-    //     return this.actions$.pipe(
-    //         ofType(ROUTER_NAVIGATED),
-    //         map((action: any) => {
-    //             let url = action?.payload.event.url.split('/');
-    //             url.shift();
-    //             return {baseUrl: url[0], tournamentId: url[1]};
-    //         }),
-    //         // SHOULD BE TURNED ON WHEN NOT DEBUGGING, DEBUG, 
-    //         // NO NEED FOR THIS TO LOAD ON EVERY PAGE
-    //         // filter((routeObj: any) => routeObj.baseUrl === 'tournament-list' && !!routeObj.tournamentId),
-    //         switchMap((routeObj: any) => {
-    //             return this.userApiService.loadUsers().pipe(
-    //                 map((users: User[]) => UserAPIActions.LoadUsersSuccess({allUsers: users})),
-    //                 catchError((err) => of(UserAPIActions.LoadUsersError({err: err})))
-    //             )
-    //         }),
-    //         take(1)
-    //     );   
-    // });
+
 
 
 
