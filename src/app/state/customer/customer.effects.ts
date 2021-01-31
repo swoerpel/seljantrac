@@ -28,7 +28,7 @@ export class CustomerEffects {
     })
 
 
-    createOrder$ = createEffect((): any => {
+    loadCustomers$ = createEffect((): any => {
         return this.actions$.pipe(
             ofType(CustomerRouterActions.LoadCustomers),
             switchMap(() => {

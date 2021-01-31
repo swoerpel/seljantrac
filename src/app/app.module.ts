@@ -23,7 +23,24 @@ import { MaterialModule } from './shared/modules/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { customerReducer } from './state/customer/customer.reducer';
 import { CustomerEffects } from './state/customer/customer.effects';
+import { materialReducer } from './state/material/material.reducer';
+import { MaterialEffects } from './state/material/material.effects';
+import { userReducer } from './state/user/user.reducer';
+import { UserEffects } from './state/user/user.effects';
 
+const stateSlices = {
+  user: userReducer,
+  order: orderReducer,
+  customer: customerReducer,
+  material: materialReducer,
+}
+
+const stateEffects = [
+  UserEffects,
+  OrderEffects,
+  CustomerEffects,
+  MaterialEffects
+]
 
 @NgModule({
   declarations: [
@@ -40,14 +57,8 @@ import { CustomerEffects } from './state/customer/customer.effects';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     // NgxAuthFirebaseUIModule.forRoot(environment.firebase,() => 'calcutta_factory',environment.firebase_auth),
-    StoreModule.forRoot({
-      order: orderReducer,
-      customer: customerReducer,
-    }),
-    EffectsModule.forRoot([
-      OrderEffects,
-      CustomerEffects
-    ]),
+    StoreModule.forRoot(stateSlices),
+    EffectsModule.forRoot(stateEffects),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
       name: 'seljantrac',

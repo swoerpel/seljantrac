@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, DocumentReference } from "@angular/fire/firestore";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { Store } from "@ngrx/store";
-import { from, Observable, of } from "rxjs";
+import { head, last } from 'lodash';
+import { from, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Customer } from "../models/customer.model";
-import { Order } from "../models/order.model";
-import { head, last} from 'lodash';
 
 
 @Injectable({

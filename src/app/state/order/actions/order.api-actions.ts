@@ -10,3 +10,13 @@ export const CreateOrderError = createAction(
     '[Order Api] Create Order Error',
     props<{err: any}>()
 )
+
+export const LoadOrdersSuccess = createAction(
+    '[Order Api] Load Order Success',
+    props<{orders: Order[]}>()
+)
+
+export const LoadOrdersError = createAction(
+    '[Order Api] Load Order Error',
+    props<{err: any}>()
+)

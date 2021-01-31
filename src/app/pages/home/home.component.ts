@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/internal/operators/filter';
+import { OrderSelectors } from 'src/app/state/order/selectors';
 
 @Component({
   selector: 'app-home',
@@ -48,13 +51,18 @@ export class HomeComponent implements OnInit {
     },
   ]
 
+  public orders$: Observable<any>;
+
   constructor(
     private store: Store,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-
+    this.orders$ = this.store.select(OrderSelectors.GetOrders).pipe(
+      filter(orders=>orders.length > 0)
+    )
+    this.orders$.subscribe(console.log);
   }
 
   public createItem(){

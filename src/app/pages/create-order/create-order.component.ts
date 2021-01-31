@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { filter, take, tap } from 'rxjs/operators';
+import { LoadingState } from 'src/app/shared/enums/loading-state.enum';
 import { Customer } from 'src/app/shared/models/customer.model';
 import { Order } from 'src/app/shared/models/order.model';
 import { CustomerSelectors } from 'src/app/state/customer/selectors';
 import { OrderPageActions } from 'src/app/state/order/actions';
+import { OrderSelectors } from 'src/app/state/order/selectors';
 
 @Component({
   selector: 'app-create-order',
@@ -38,25 +41,29 @@ export class CreateOrderComponent implements OnInit {
     dueDate: new FormControl('',[
       Validators.required,
     ]),
-    notes: new FormControl()
+  notes: new FormControl()
   });
 
   constructor(
     private store: Store,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.customers$ = this.store.select(CustomerSelectors.GetCustomers);
-    this.formGroup.valueChanges.pipe(
-      tap((r)=>console.log(r))
-    ).subscribe();
   }
 
   createOrder(){
-    console.log('partial order',this.formGroup.value)
     this.store.dispatch(OrderPageActions.CreateOrder({
       order: {...this.formGroup.value}
     }))
+
+    this.store.select(OrderSelectors.GetLoadingState).pipe(
+      filter((ls: LoadingState)=> ls === LoadingState.Stable),
+      take(1),
+      tap((_) => this.router.navigate([''])),
+    ).subscribe();
+
   }
 
 }

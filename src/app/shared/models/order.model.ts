@@ -5,7 +5,7 @@ export interface Order{
     name: string;
     customerId: string; // customer type
     creatorId?: string; // user id of creator
-    material?: Material; // will be material type
+    materialId?: string; // will be material type
     dueDate?: Date;
     notes?: string;
     status?: number; // status enum
@@ -13,3 +13,10 @@ export interface Order{
 }
 
 
+export interface OrderView {
+    id: string;
+    name: string;
+    materialType: string;
+    customerName: string;
+    creatorName: string;
+}
