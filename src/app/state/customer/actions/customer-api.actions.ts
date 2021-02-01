@@ -10,3 +10,23 @@ export const LoadCustomersError = createAction(
     '[Router] Load Customers Error',
     props<{err: any}>()
 )
+
+export const CreateCustomerSuccess = createAction(
+    '[Router] Create Customer Success',
+    props<{customer: Customer}>()
+)
+
+export const CreateCustomerError = createAction(
+    '[Router] Create Customer Error',
+    props<{err: any}>()
+)
+
+export const DeleteCustomerSuccess = createAction(
+    '[Router] Delete Customer Success',
+    props<{customerId: string}>()
+)
+
+export const DeleteCustomerError = createAction(
+    '[Router] Delete Customer Error',
+    props<{err: any}>()
+)

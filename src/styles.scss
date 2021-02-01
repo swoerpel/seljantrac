@@ -55,6 +55,8 @@ body {
     background-color: var(--color-accent) !important;
     color: var(--color-light) !important;
     font-size: var(--m);
+    margin: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
     &:hover{
         cursor: pointer;
     }
@@ -68,3 +70,38 @@ body {
         color: var(--color-medium-light) !important;
     }
 }
+
+
+.u-margin-width-xl{margin: 0 var(--space-xl) !important;}
+.u-margin-width-l{margin: 0 var(--space-l) !important;}
+.u-padding-width-m{padding: 0 var(--space-m) !important;}
+.u-margin-width-s{margin: 0 var(--space-s) !important;}
+.u-margin-width-xs{margin: 0 var(--space-xs) !important;}
+
+.u-margin-height-xl{margin: var(--space-xl) 0 !important;}
+.u-margin-height-l{margin: var(--space-l) 0 !important;}
+.u-padding-height-m{padding: var(--space-m) 0 !important;}
+.u-margin-height-s{margin: var(--space-s) 0 !important;}
+.u-margin-height-xs{margin: var(--space-xs) 0 !important;}
+
+.u-margin-bottom-xl { margin-bottom: var(--space-xl) !important; }
+.u-margin-top-xl    { margin-top:    var(--space-xl) !important; }
+.u-margin-bottom-l  { margin-bottom: var(--space-l)  !important; }
+.u-margin-top-l     { margin-top:    var(--space-l)  !important; }
+.u-margin-bottom-m  { margin-bottom: var(--space-m)  !important; }
+.u-margin-top-m     { margin-top:    var(--space-m)  !important; }
+.u-margin-bottom-s  { margin-bottom: var(--space-s)  !important; }
+.u-margin-top-s     { margin-top:    var(--space-s)  !important; }
+.u-margin-bottom-xs  { margin-bottom: var(--space-xs)  !important; }
+.u-margin-top-xs     { margin-top:    var(--space-xs)  !important; }
+.u-margin-right-xl  { margin-right:  var(--space-xl) !important; }
+.u-margin-left-xl   { margin-left:   var(--space-xl) !important; }
+.u-margin-right-l   { margin-right:  var(--space-l)  !important; }
+.u-margin-left-l    { margin-left:   var(--space-l)  !important; }
+.u-margin-right-m   { margin-right:  var(--space-m)  !important; }
+.u-margin-left-m    { margin-left:   var(--space-m)  !important; }
+.u-margin-right-s   { margin-right:  var(--space-s)  !important; }
+.u-margin-left-s    { margin-left:   var(--space-s)  !important; }
+.u-margin-right-xs   { margin-right:  var(--space-xs)  !important; }
+.u-margin-left-xs    { margin-left:   var(--space-xs)  !important; }
+

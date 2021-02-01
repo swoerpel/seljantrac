@@ -1,5 +1,10 @@
 <div class="header">
-    <button mat-raised-button (click)="createItem()" class="button">Create</button>
+    <button mat-raised-button (click)="createItem()" class="button btn">
+       <mat-icon>add_box</mat-icon> 
+    </button>
+    <button mat-raised-button (click)="toSettings()" class="button btn">
+       <mat-icon>settings</mat-icon> 
+    </button>
 </div>
 <ng-container *ngIf="(viewOrders$ | async) as viewOrders">
     <app-item-list (itemSelected)="orderSelected($event)" 

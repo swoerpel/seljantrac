@@ -10,9 +10,16 @@
 .header{
     display: flex;
     justify-content: flex-end;
+
+    padding: 0.5rem 1rem;
 }
 
 .footer{
     display: flex;
     justify-content: center;
+}
+
+.btn{
+    padding: 0.25rem;
+    margin: 1rem;
 }

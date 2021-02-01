@@ -22,9 +22,7 @@ export class OrderApiService {
 
     public loadOrders(): Observable<Order[]>{
         return from(this.db.collection<any>('orders').get()).pipe(
-            map((res: any)=>{
-                return res.docs.map((d)=>({...d.data(),id:d.id}))
-            }),
+            map((res: any) => res.docs.map((d)=>({...d.data(),id:d.id}))),
             map((orders: Order[])=>{
                 return orders.map((order: any) => {
                     let dueDate: string = formatDate(
@@ -45,10 +43,9 @@ export class OrderApiService {
 
     public createOrder(order: Order): Observable<Order>{
         order = {...order, createdOn: firebase.default.firestore.FieldValue.serverTimestamp()};
-        return from(this.db.collection<any>('orders').add(order)).pipe(
-            map((docRef: DocumentReference<any>)=>{
-                return {...order,id: docRef.id}
-            })
+        const id = uid(6);
+        return from(this.db.collection<any>('orders').doc(id).set(order)).pipe(
+            map((_)=>({...order,id}))
         )
     }
 

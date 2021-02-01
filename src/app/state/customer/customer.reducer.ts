@@ -34,4 +34,23 @@ export const customerReducer = createReducer<CustomerState>(
             error: null
         }
     }),
+
+    on(CustomerApiActions.CreateCustomerSuccess, (state, action): CustomerState => {
+        return {
+            ...state,
+            customers: [...state.customers, action.customer]
+        }
+    }),
+    on(CustomerApiActions.DeleteCustomerSuccess, (state, action): CustomerState => {
+        return {
+            ...state,
+            customers: state.customers.filter(c=>c.id !== action.customerId)
+        }
+    }),
+    on(CustomerApiActions.DeleteCustomerError, (state, action): CustomerState => {
+        return {
+            ...state,
+            error: action.err,
+        }
+    }),
 );

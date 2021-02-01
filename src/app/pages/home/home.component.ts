@@ -30,7 +30,10 @@ export class HomeComponent implements OnInit {
 
   public createItem(){
     this.router.navigate(['/create']);
+  }
 
+  public toSettings(){
+    this.router.navigate(['/settings']);
   }
 
   public orderSelected(selectedOrder: Order){

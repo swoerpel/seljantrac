@@ -1,1 +1,28 @@
-<p>settings works!</p>
+<div class="row">
+    <button (click)="accordion.openAll()" 
+            class="button btn"
+            mat-raised-button>
+        <mat-icon>expand</mat-icon>
+    </button>
+    <button (click)="accordion.closeAll()" 
+            class="button btn"
+            mat-raised-button>
+        <mat-icon>vertical_align_center</mat-icon>
+    </button>
+</div>
+<ng-container *ngIf="(customers$ | async) as customers">
+    <mat-accordion multi>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{customersTitle}}</mat-panel-title>
+                <mat-panel-description>
+                    {{customersSubtitle}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-edit-list [data]="customers"
+                           (removeAction)="removeCustomer($event)"
+                           (addAction)="addCustomer($event)">
+            </app-edit-list>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>
