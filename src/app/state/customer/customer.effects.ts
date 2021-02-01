@@ -32,8 +32,8 @@ export class CustomerEffects {
         return this.actions$.pipe(
             ofType(
                 CustomerRouterActions.LoadCustomers,
-                CustomerApiActions.CreateCustomerSuccess,
-                CustomerApiActions.DeleteCustomerSuccess,
+                // CustomerApiActions.CreateCustomerSuccess,
+                // CustomerApiActions.DeleteCustomerSuccess,
             ),
             switchMap(() => {
                 return this.customerApiService.loadCustomers().pipe(

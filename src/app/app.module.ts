@@ -31,19 +31,23 @@ import { LoginComponent } from './pages/login/login.component';
 import { SnackbarErrorComponent } from './components/error-snackbar/error-snackbar.component';
 import { ViewOrderComponent } from './pages/view-order/view-order.component';
 import { EditListComponent } from './components/edit-list/edit-list.component';
+import { workflowReducer } from './state/workflow/workflow.reducer';
+import { WorkflowEffects } from './state/workflow/workflow.effects';
 
 const stateSlices = {
   user: userReducer,
   order: orderReducer,
   customer: customerReducer,
   material: materialReducer,
+  workflow: workflowReducer,
 }
 
 const stateEffects = [
   UserEffects,
   OrderEffects,
   CustomerEffects,
-  MaterialEffects
+  MaterialEffects,
+  WorkflowEffects,
 ]
 
 

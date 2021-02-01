@@ -1,14 +1,14 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatAccordion } from '@angular/material/expansion';
-import { MatPaginator } from '@angular/material/paginator';
-import { Observable, of } from 'rxjs';
-import { head } from 'lodash';
-import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { CustomerPageActions } from 'src/app/state/customer/actions';
-import { Customer } from 'src/app/shared/models/customer.model';
-import { CustomerSelectors } from 'src/app/state/customer/selectors';
+import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { EditListText } from 'src/app/components/edit-list/edit-list.component';
+import { Customer } from 'src/app/shared/models/customer.model';
+import { Material } from 'src/app/shared/models/material.model';
+import { CustomerPageActions } from 'src/app/state/customer/actions';
+import { CustomerSelectors } from 'src/app/state/customer/selectors';
+import { MaterialSelectors } from 'src/app/state/material/selectors';
 
 @Component({
   selector: 'app-settings',
@@ -16,26 +16,33 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  @ViewChild(MatAccordion) accordion: MatAccordion;
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  public customers$: Observable<Customer[]>
-  public customersTitle: string = "Customers";
-  public customersSubtitle: string = "Add or Remove";
-  public selection = new SelectionModel<any>(true, []);
+  public customers$: Observable<Customer[]>;
+  public materials$: Observable<Material[]>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  public customerSettings = {
-    title: 'Customers',
+  public customerSettingsText: EditListText = {
+    title: 'Customer',
+    subtitle: 'Add or Remove'
   }
+
+  public materialSettingsText: EditListText = {
+    title: 'Material',
+    subtitle: 'Add or Remove'
+  }
+
+  public customerName: FormControl = new FormControl('',[Validators.required]);
 
   constructor(
     private store: Store,
   ) { }
 
   ngOnInit(): void {
+
     this.customers$ = this.store.select(CustomerSelectors.GetCustomers).pipe(
+      filter((c)=>c.length > 0)
+    );
+
+    this.materials$ = this.store.select(MaterialSelectors.GetMaterials).pipe(
       filter((c)=>c.length > 0)
     );
   }
@@ -44,8 +51,18 @@ export class SettingsComponent implements OnInit {
     this.store.dispatch(CustomerPageActions.DeleteCustomer({customerId: customer.id}));
   }
 
-  public addCustomer(name){
+  public addCustomer(){
+    const name = this.customerName.value;
     this.store.dispatch(CustomerPageActions.CreateCustomer({name}))
   }
+
+
+  // TODO: Dig into materials a bit more and add these calls
+  public removeMaterial(customer){
+  }
+
+  public addMaterial(name){
+  }
+
 
 }

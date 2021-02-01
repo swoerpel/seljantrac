@@ -1,28 +1,26 @@
-<div class="row">
-    <button (click)="accordion.openAll()" 
-            class="button btn"
-            mat-raised-button>
-        <mat-icon>expand</mat-icon>
-    </button>
-    <button (click)="accordion.closeAll()" 
-            class="button btn"
-            mat-raised-button>
-        <mat-icon>vertical_align_center</mat-icon>
-    </button>
-</div>
+
 <ng-container *ngIf="(customers$ | async) as customers">
-    <mat-accordion multi>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>{{customersTitle}}</mat-panel-title>
-                <mat-panel-description>
-                    {{customersSubtitle}}
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <app-edit-list [data]="customers"
-                           (removeAction)="removeCustomer($event)"
-                           (addAction)="addCustomer($event)">
-            </app-edit-list>
-        </mat-expansion-panel>
-    </mat-accordion>
+    <app-edit-list [data]="customers"
+                   [text]="customerSettingsText"
+                   (removeAction)="removeCustomer($event)">
+        <mat-form-field appearance="outline" >
+            <mat-label>New {{customerSettingsText.title}}</mat-label>
+            <input [formControl]="customerName" 
+                matInput 
+                placeholder="new {{customerSettingsText.title}}" >
+        </mat-form-field>
+        <button (click)="addCustomer()"
+                mat-raised-button 
+                class="add-button button">
+            <mat-icon class="add-icon">add_box</mat-icon>
+        </button>
+    </app-edit-list>
+</ng-container>
+
+<ng-container *ngIf="(materials$ | async) as materials">
+    <app-edit-list [data]="materials"
+                   [text]="materialSettingsText"
+                   (removeAction)="removeMaterial($event)">
+        <div class="todo">TODO: ADD FORM CONTROLS TO CREATE MATERIALS</div>
+    </app-edit-list>
 </ng-container>
