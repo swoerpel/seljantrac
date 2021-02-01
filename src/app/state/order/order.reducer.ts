@@ -4,11 +4,13 @@ import { OrderApiActions, OrderPageActions, OrderRouterActions } from "./actions
 
 export interface OrderState {
     orders: Order[];
+    selectedOrderId: string;
     error: any;
 }
 
 const initialState: OrderState = {
     orders: [],
+    selectedOrderId: null,
     error: null,
 }
 
@@ -50,6 +52,12 @@ export const orderReducer = createReducer<OrderState>(
         return {
             ...state,
             error: action.err,
+        }
+    }),
+    on(OrderPageActions.SelectOrder, (state, action): OrderState => {
+        return {
+            ...state,
+            selectedOrderId: action.orderId,
         }
     }),
 );

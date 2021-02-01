@@ -1,9 +1,9 @@
 <div class="header">
     <button mat-raised-button (click)="createItem()" class="button">Create</button>
 </div>
-<ng-container *ngIf="(orders$ | async) as orders">
-    <app-item-list (itemSelected)="itemSelected($event)" 
-                [data]="orders">
+<ng-container *ngIf="(viewOrders$ | async) as viewOrders">
+    <app-item-list (itemSelected)="orderSelected($event)" 
+                [data]="viewOrders">
     </app-item-list>
 </ng-container>
 <div class="footer">

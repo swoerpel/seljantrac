@@ -38,7 +38,9 @@ export class OrderEffects {
             switchMap(() => {
                 return this.orderApiService.loadOrders().pipe(
                     map((orders: Order[]) => OrderApiActions.LoadOrdersSuccess({orders})),
-                    catchError((err) => of(OrderApiActions.LoadOrdersError({err})))
+                    catchError((err) => {
+                        return of(OrderApiActions.LoadOrdersError({err}))
+                    })
                 )
             })
         )   

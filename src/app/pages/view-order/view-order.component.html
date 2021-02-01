@@ -1,0 +1,5 @@
+<ng-container *ngIf="(completeOrder$ | async) as completeOrder">
+    <div class="title"><strong>{{completeOrder.name}}</strong></div>
+    <div class="subtitle"><strong>ID:</strong> {{completeOrder.id}}</div>
+    <div class="subtitle"><strong>CUSTOMER:</strong> {{completeOrder.customer.name}}</div>
+</ng-container>

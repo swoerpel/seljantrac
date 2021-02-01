@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/internal/operators/filter';
 import { first } from 'rxjs/operators';
+import { Order, ViewOrder } from 'src/app/shared/models/order.model';
+import { OrderPageActions } from 'src/app/state/order/actions';
 import { OrderSelectors } from 'src/app/state/order/selectors';
 
 @Component({
@@ -13,46 +15,7 @@ import { OrderSelectors } from 'src/app/state/order/selectors';
 })
 export class HomeComponent implements OnInit {
 
-
-  public mockItemData = [
-    {
-      id: 3325,
-      name: 'misc parts',
-      material: '11 gage ss',
-      customer: 'jefferson',
-      creator: 'dreyfus',
-    },
-    {
-      id: 6645,
-      name: 'old useless parts',
-      material: '12 gage ms',
-      customer: 'phillip',
-      creator: 'rivers',
-    },
-    {
-      id: 2275,
-      name: 'fast bike',
-      material: 'bike parts',
-      customer: 'louis',
-      creator: 'pete',
-    },
-    {
-      id: 2275,
-      name: 'fast bike',
-      material: 'bike parts',
-      customer: 'louis',
-      creator: 'pete',
-    },
-    {
-      id: 2275,
-      name: 'fast bike',
-      material: 'bike parts',
-      customer: 'louis',
-      creator: 'pete',
-    },
-  ]
-
-  public orders$: Observable<any>;
+  public viewOrders$: Observable<ViewOrder[]>;
 
   constructor(
     private store: Store,
@@ -60,7 +23,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.orders$ = this.store.select(OrderSelectors.GetOrders).pipe(
+    this.viewOrders$ = this.store.select(OrderSelectors.GetViewOrders).pipe(
       filter(orders=>orders.length > 0),
     )
   }
@@ -70,8 +33,9 @@ export class HomeComponent implements OnInit {
 
   }
 
-  public itemSelected(selectedItem){
-    console.log('selectedItem',selectedItem)
+  public orderSelected(selectedOrder: Order){
+    this.store.dispatch(OrderPageActions.SelectOrder({orderId: selectedOrder.id}))
+    this.router.navigate([`home/${selectedOrder.id}/`])
   }
 
 }

@@ -29,6 +29,7 @@ import { userReducer } from './state/user/user.reducer';
 import { UserEffects } from './state/user/user.effects';
 import { LoginComponent } from './pages/login/login.component';
 import { SnackbarErrorComponent } from './components/error-snackbar/error-snackbar.component';
+import { ViewOrderComponent } from './pages/view-order/view-order.component';
 
 const stateSlices = {
   user: userReducer,
@@ -57,6 +58,7 @@ const stateEffects = [
     CreateOrderComponent,
     LoginComponent,
     SnackbarErrorComponent,
+    ViewOrderComponent,
   ],
   imports: [
     BrowserModule,

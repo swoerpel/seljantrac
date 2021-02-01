@@ -5,6 +5,7 @@ import { CreateOrderComponent } from './pages/create-order/create-order.componen
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { ViewOrderComponent } from './pages/view-order/view-order.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,11 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent, 
+    canActivate: [LoggedInGuard]
+  },
+  {
+    path: 'home/:order_id',
+    component: ViewOrderComponent, 
     canActivate: [LoggedInGuard]
   },
   {
