@@ -28,6 +28,8 @@ export class ThermometerComponent implements OnInit {
     completed: 1,
   }
 
+  public furthestStep: number;
+
   @Input() orderWorkflow: OrderWorkflow;
 
   public orderWorkflowSteps: DateColumn[];
@@ -39,8 +41,8 @@ export class ThermometerComponent implements OnInit {
       .map(([step,st]:[string,ServerTimestamp]) => 
         (st === null) ? {step,date: 'None'} : {step,date: serverTimestampToDate(st)}
     ).sort((a,b) => this.defaultStepOrder[a.step] - this.defaultStepOrder[b.step])
-    const furthestStep = head(this.orderWorkflowSteps.filter((ow)=>ow.date !== 'None'))
-    this.percentFilled = this.defaultStepOrder[furthestStep.step]
+    this.furthestStep = head(this.orderWorkflowSteps.filter((ow)=>ow.date !== 'None')).step
+    this.percentFilled = this.defaultStepOrder[this.furthestStep]
   }
 
 }
