@@ -23,20 +23,10 @@ export const LoadOrderWorkflowsError = createAction(
 
 export const AdvanceOrderWorkflowStateSuccess = createAction(
     '[Api] Advance Order Workflow State Success',
-    props<{orderWorkflow: OrderWorkflow}>(),
+    // props<{orderId: string}>(),
 )
 
 export const AdvanceOrderWorkflowStateError = createAction(
     '[Api] Advance Order Workflow State Error',
-    props<{err: any}>(),
-)
-
-export const GetSelectedOrderWorkflowSuccess = createAction(
-    '[Api] Get Selected Order Workflow Success',
-    props<{orderWorkflow: OrderWorkflow}>(),
-)
-
-export const GetSelectedOrderWorkflowError = createAction(
-    '[Api] Get Selected Order Workflow Error',
     props<{err: any}>(),
 )

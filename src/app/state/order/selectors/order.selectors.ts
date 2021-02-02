@@ -42,7 +42,12 @@ export const GetCompleteOrders = createSelector(
 export const GetSelectedOrder = createSelector(
     orderFeatureState,
     (state: OrderState): Order => state.orders
-        .find((order: Order) => order.id === state.selectedOrderId)
+        ?.find((order: Order) => order.id === state.selectedOrderId)
+)
+
+export const GetSelectedOrderId = createSelector(
+    orderFeatureState,
+    (state: OrderState): string => state.selectedOrderId
 )
 
 export const GetSelectedOrderWorkflow = createSelector(

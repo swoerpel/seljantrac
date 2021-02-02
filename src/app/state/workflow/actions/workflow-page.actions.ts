@@ -10,9 +10,4 @@ export const AdvanceOrderWorkflowState = createAction(
     props<{orderId: string;}>()
 );
 
-export const GetSelectedOrderWorkflow = createAction(
-    '[View Order Page] Get Selected Order Workflow',
-    // props<{orderId: string;}>()
-)
-
 

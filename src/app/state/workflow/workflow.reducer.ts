@@ -42,17 +42,8 @@ export const workflowReducer = createReducer<WorkflowState>(
     on(WorkflowPageActions.LoadSelectedOrder, (state, action): WorkflowState => {
         return {
             ...state,
-            // ORDER ID IS CORRECT, ORDER AND WORKFLOW ARE BUILT IN PARRALLEL AND SHARE IDS
-            selectedOrderWorkflow: state.orderWorkflows.find(ow => ow.id === action.orderId)
-        }
-    }),
-    on(WorkflowApiActions.GetSelectedOrderWorkflowSuccess, (state, action): WorkflowState => {
-        console.log('action.orderWorkflow',action.orderWorkflow)
-        return {
-            ...state,
-            selectedOrderWorkflow: action.orderWorkflow
-            // ORDER ID IS CORRECT, ORDER AND WORKFLOW ARE BUILT IN PARRALLEL AND SHARE IDS
-            // selectedWorkflow: state.orderWorkflows.find(ow => ow.id === action.orderId)
+            // ORDER ID IS CORRECT, ORDER AND WORKFLOW ARE BUILT IN PARALLEL AND SHARE IDS
+            selectedOrderWorkflow: state.orderWorkflows?.find(ow => ow.id === action.orderId)
         }
     }),
 );
