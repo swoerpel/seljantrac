@@ -4,13 +4,13 @@ import { WorkflowApiActions, WorkflowPageActions } from "./actions";
 
 export interface WorkflowState {
     orderWorkflows: OrderWorkflow[];
-    selectedWorkflow: OrderWorkflow;
+    selectedOrderWorkflow: OrderWorkflow;
     error: any;
 }
 
 const initialState: WorkflowState = {
     orderWorkflows: null,
-    selectedWorkflow: null,
+    selectedOrderWorkflow: null,
     error: null,
 }
 
@@ -43,7 +43,16 @@ export const workflowReducer = createReducer<WorkflowState>(
         return {
             ...state,
             // ORDER ID IS CORRECT, ORDER AND WORKFLOW ARE BUILT IN PARRALLEL AND SHARE IDS
-            selectedWorkflow: state.orderWorkflows.find(ow => ow.id === action.orderId)
+            selectedOrderWorkflow: state.orderWorkflows.find(ow => ow.id === action.orderId)
+        }
+    }),
+    on(WorkflowApiActions.GetSelectedOrderWorkflowSuccess, (state, action): WorkflowState => {
+        console.log('action.orderWorkflow',action.orderWorkflow)
+        return {
+            ...state,
+            selectedOrderWorkflow: action.orderWorkflow
+            // ORDER ID IS CORRECT, ORDER AND WORKFLOW ARE BUILT IN PARRALLEL AND SHARE IDS
+            // selectedWorkflow: state.orderWorkflows.find(ow => ow.id === action.orderId)
         }
     }),
 );

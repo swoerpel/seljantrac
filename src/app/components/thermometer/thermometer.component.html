@@ -19,6 +19,15 @@
     </svg>
 </div>
 <div class="buttons">
-    <button [disabled]="furthestStep === 'created'" mat-raised-button class="buttons buttons__revert">Revert</button>
-    <button mat-raised-button class="buttons buttons__advance">Advance</button>
+    <button (click)="revertAction()" 
+            [disabled]="furthestStep === 'created'" 
+            mat-raised-button 
+            class="buttons buttons__revert">
+        Revert
+    </button>
+    <button (click)="advanceAction()" 
+            mat-raised-button 
+            class="buttons buttons__advance">
+        Advance
+    </button>
 </div>

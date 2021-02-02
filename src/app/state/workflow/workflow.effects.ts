@@ -1,12 +1,15 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
 import { of } from "rxjs";
-import { switchMap, map, catchError } from "rxjs/operators";
+import { switchMap, map, catchError, withLatestFrom } from "rxjs/operators";
+import { DEFAULT_WORKFLOW_STEP_STRINGS } from "src/app/shared/constants/workflow.constants";
 import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
 import { WorkflowApiService } from "src/app/shared/services/workflow-api.service";
 import { OrderApiActions, OrderRouterActions } from "../order/actions";
-import { WorkflowApiActions, WorkflowRouterActions } from "./actions";
-
+import { WorkflowApiActions, WorkflowPageActions, WorkflowRouterActions } from "./actions";
+import { WorkflowSelectors } from "./selectors";
+import { head } from 'lodash';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +17,7 @@ import { WorkflowApiActions, WorkflowRouterActions } from "./actions";
 export class WorkflowEffects {
     constructor( 
         private actions$: Actions,
+        private store: Store,
         private workflowApiService: WorkflowApiService,
     ){ 
  
@@ -28,6 +32,24 @@ export class WorkflowEffects {
         );
     })
 
+    getSelectedOrderWorkflow$ = createEffect(():any => {
+        return this.actions$.pipe(
+            ofType(WorkflowApiActions.AdvanceOrderWorkflowStateSuccess),
+            withLatestFrom(this.store.select(WorkflowSelectors.GetSelectedOrderWorkflow)),
+            switchMap(([_,selectedOrderWorkflow]) => {
+                return this.workflowApiService.getOrderWorkflow(selectedOrderWorkflow.id).pipe(
+                    map((res)=>{
+                        return WorkflowApiActions.GetSelectedOrderWorkflowSuccess({orderWorkflow:{
+                            ...res.data(),
+                            id: res.id
+                        }})
+                    }),
+                    catchError((err) => of(WorkflowApiActions.GetSelectedOrderWorkflowError({err})))
+                )
+            })
+        );
+    })
+
 
     createOrderWorkflow$ = createEffect((): any => {
         return this.actions$.pipe(
@@ -35,7 +57,7 @@ export class WorkflowEffects {
             map(p => p.orderId),
             switchMap((orderId: string) => {
                 return this.workflowApiService.createOrderWorkflow(orderId).pipe(
-                    map((orderWorkflow: OrderWorkflow) => WorkflowApiActions.CreateOrderWorkflowSuccess({orderWorkflow})),
+                    map((orderWorkflow: OrderWorkflow) => WorkflowApiActions.CreateOrderWorkflowSuccess()),
                     catchError((err) => of(WorkflowApiActions.CreateOrderWorkflowError({err})))
                 )
             })
@@ -43,7 +65,7 @@ export class WorkflowEffects {
     });
 
 
-    loadOrders$ = createEffect((): any => {
+    loadOrderWorkflows$ = createEffect((): any => {
         return this.actions$.pipe(
             ofType(WorkflowRouterActions.LoadOrderWorkflows),
             switchMap(() => {
@@ -51,6 +73,31 @@ export class WorkflowEffects {
                     map((orderWorkflows: OrderWorkflow[]) => WorkflowApiActions.LoadOrderWorkflowsSuccess({orderWorkflows})),
                     catchError((err) => {
                         return of(WorkflowApiActions.LoadOrderWorkflowsError({err}))
+                    })
+                )
+            })
+        )   
+    });
+
+
+    advanceWorkflowState$ = createEffect((): any => {
+        return this.actions$.pipe(
+            ofType(WorkflowPageActions.AdvanceOrderWorkflowState),
+            map(p=>p.orderId),
+            withLatestFrom(this.store.select(WorkflowSelectors.GetSelectedOrderWorkflow)),
+            switchMap(([orderId,selectedOrderWorkflow]: [string,OrderWorkflow]) => {
+                // this 100% needs to be composed into a general function
+                // thermometer.component.ts implements a version of this
+                const nextStep = head(Object.entries(selectedOrderWorkflow)
+                .sort(([k1,_],[k2,__]) => 
+                    DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(k1) - 
+                    DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(k2)
+                ).find(([_,value])=>!value))
+
+                return this.workflowApiService.advanceWorkflow(orderId,nextStep).pipe(
+                    map((orderWorkflow: OrderWorkflow) => WorkflowApiActions.AdvanceOrderWorkflowStateSuccess({orderWorkflow})),
+                    catchError((err) => {
+                        return of(WorkflowApiActions.AdvanceOrderWorkflowStateError({err}))
                     })
                 )
             })

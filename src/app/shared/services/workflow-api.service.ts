@@ -36,5 +36,26 @@ export class WorkflowApiService {
         );
     }
 
+    public advanceWorkflow(orderId: string,nextStep: string): Observable<any>{
+        console.log('orderId',orderId)
+        // console.log("nextStep",nextStep)
+        return from(this.db.collection<any>('workflows').doc(orderId).update({
+            [nextStep]:firebase.default.firestore.FieldValue.serverTimestamp()
+        })).pipe(
+            map((_)=>{
+                console.log('update workflow success')
+            })
+        );
+    }
+
+    public getOrderWorkflow(orderId: string): Observable<any>{
+        console.log('orderId',orderId)
+        return from(this.db.collection<any>('workflows').doc(orderId).get()).pipe(
+            tap((res)=>{
+                console.log("res",res)
+            })
+        );
+    }
+
 
 }

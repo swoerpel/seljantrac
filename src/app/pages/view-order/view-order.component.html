@@ -3,6 +3,10 @@
     <div class="subtitle"><strong>ID:</strong> {{completeOrder.id}}</div>
     <div class="subtitle"><strong>CUSTOMER:</strong> {{completeOrder.customer.name}}</div>
     <ng-container *ngIf="(orderWorkflow$ | async) as orderWorkflow">
-        <app-thermometer [orderWorkflow]="orderWorkflow"></app-thermometer>
+        <app-thermometer 
+            (advance)="advanceWorkflowState($event,orderWorkflow)"
+            (revert)="revertWorkflowState($event)"
+            [orderWorkflow]="orderWorkflow">
+        </app-thermometer>
     </ng-container>
 </ng-container>

@@ -5,5 +5,5 @@ const workflowFeatureState = createFeatureSelector<WorkflowState>('workflow');
 
 export const GetSelectedOrderWorkflow = createSelector(
     workflowFeatureState,
-    (state: WorkflowState): any => state.selectedWorkflow
+    (state: WorkflowState): any => state.selectedOrderWorkflow
 )

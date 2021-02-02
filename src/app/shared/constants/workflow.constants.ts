@@ -5,3 +5,9 @@ export const DEFAULT_WORKFLOW_STEPS = [
     WorkflowStepType.Started,
     WorkflowStepType.Completed,
 ]
+
+export const DEFAULT_WORKFLOW_STEP_STRINGS = [
+    'created',
+    'started',
+    'completed',
+]
