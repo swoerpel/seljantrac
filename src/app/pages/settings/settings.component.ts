@@ -23,12 +23,12 @@ export class SettingsComponent implements OnInit {
 
   public customerSettingsText: EditListText = {
     title: 'Customer',
-    subtitle: 'Add or Remove'
+    subtitle: 'Settings'
   }
 
   public materialSettingsText: EditListText = {
     title: 'Material',
-    subtitle: 'Add or Remove'
+    subtitle: 'Settings'
   }
 
   public customerName: FormControl = new FormControl('',[Validators.required]);
@@ -58,10 +58,7 @@ export class SettingsComponent implements OnInit {
     this.store.dispatch(CustomerPageActions.CreateCustomer({name}))
   }
 
-
-  // TODO: Dig into materials a bit more and add these calls
   public removeMaterial(material){
-    console.log('material',material)
     const materialId = material.id;
     this.store.dispatch(MaterialPageActions.DeleteMaterial({materialId}))
   }
@@ -70,6 +67,5 @@ export class SettingsComponent implements OnInit {
     const name = this.materialName.value;
     this.store.dispatch(MaterialPageActions.CreateMaterial({name}))
   }
-
 
 }

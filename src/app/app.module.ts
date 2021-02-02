@@ -33,6 +33,7 @@ import { ViewOrderComponent } from './pages/view-order/view-order.component';
 import { EditListComponent } from './components/edit-list/edit-list.component';
 import { workflowReducer } from './state/workflow/workflow.reducer';
 import { WorkflowEffects } from './state/workflow/workflow.effects';
+import { ThermometerComponent } from './components/thermometer/thermometer.component';
 
 const stateSlices = {
   user: userReducer,
@@ -65,6 +66,7 @@ const stateEffects = [
     SnackbarErrorComponent,
     ViewOrderComponent,
     EditListComponent,
+    ThermometerComponent,
   ],
   imports: [
     BrowserModule,

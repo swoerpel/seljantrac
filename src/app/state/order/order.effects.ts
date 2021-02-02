@@ -6,8 +6,11 @@ import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Order } from "src/app/shared/models/order.model";
+import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
 import { OrderApiService } from "src/app/shared/services/order-api.service";
+import { WorkflowApiService } from "src/app/shared/services/workflow-api.service";
 import { UserSelectors } from "../user/selectors";
+import { WorkflowApiActions, WorkflowPageActions } from "../workflow/actions";
 import { OrderApiActions, OrderPageActions, OrderRouterActions } from "./actions";
 
 @Injectable({
@@ -17,6 +20,7 @@ export class OrderEffects {
     constructor( 
         private actions$: Actions,
         private orderApiService: OrderApiService,
+        private workflowApiService: WorkflowApiService,
         private router: Router,
         private store: Store,
     ){ 
@@ -29,6 +33,14 @@ export class OrderEffects {
             switchMap(() => [
                 OrderRouterActions.LoadOrders(),
             ])
+        );
+    })
+
+    loadSelectedOrderWorkflow$ = createEffect(():any => {
+        return this.actions$.pipe(
+            ofType(OrderPageActions.SelectOrder),
+            map(p=>p.orderId),
+            switchMap((orderId: string) => of(WorkflowPageActions.LoadSelectedOrder({orderId})))
         );
     })
 
@@ -59,6 +71,7 @@ export class OrderEffects {
                     switchMap((order: Order) => [
                         OrderApiActions.CreateOrderSuccess({order}),
                         OrderRouterActions.LoadOrders(),
+                        OrderApiActions.CreateOrderWorkflow({orderId:order.id}),
                     ]),
                     catchError((err)=>of(OrderApiActions.CreateOrderError({err})))
                 )

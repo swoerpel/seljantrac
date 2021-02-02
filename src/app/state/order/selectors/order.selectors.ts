@@ -3,6 +3,7 @@ import { Customer } from "src/app/shared/models/customer.model";
 import { Material } from "src/app/shared/models/material.model";
 import { Order, CompleteOrder, ViewOrder } from "src/app/shared/models/order.model";
 import { User } from "src/app/shared/models/User.model";
+import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
 import { CustomerSelectors } from "../../customer/selectors";
 import { MaterialSelectors } from "../../material/selectors";
 import { UserSelectors } from "../../user/selectors";
@@ -42,6 +43,11 @@ export const GetSelectedOrder = createSelector(
     orderFeatureState,
     (state: OrderState): Order => state.orders
         .find((order: Order) => order.id === state.selectedOrderId)
+)
+
+export const GetSelectedOrderWorkflow = createSelector(
+    orderFeatureState,
+    (state: OrderState): OrderWorkflow => state.selectedOrderWorkflow
 )
 
 export const GetViewOrders = createSelector(

@@ -3,7 +3,7 @@ import { WorkflowState } from '../workflow.reducer';
 
 const workflowFeatureState = createFeatureSelector<WorkflowState>('workflow');
 
-export const Default = createSelector(
+export const GetSelectedOrderWorkflow = createSelector(
     workflowFeatureState,
-    (state: WorkflowState): any => null//state.Workflows
+    (state: WorkflowState): any => state.selectedWorkflow
 )

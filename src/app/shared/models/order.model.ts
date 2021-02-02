@@ -1,19 +1,17 @@
 import { Customer } from "./customer.model";
 import { Material } from "./material.model";
 import { User } from "./User.model";
-
-
+import { OrderWorkflow, WorkflowStep } from "./Workflow.model";
 
 
 
 export interface Order{
     id: string;
     name: string;
-    customerId: string; // customer type
-    creatorId: string; // user id of creator
-    materialId: string; // will be material type
+    customerId: string;
+    creatorId: string; 
+    materialId: string;
     dueDate: Date;
-    createdOn: any;
     notes?: string;
     status?: number; // status enum
     fileIds?: string[];
@@ -36,4 +34,5 @@ export interface CompleteOrder {
     customer: Customer;
     material: Material;
     creator: User;
+    // workflow: OrderWorkflow; // WORKFLOW ID === ORDER ID
 }

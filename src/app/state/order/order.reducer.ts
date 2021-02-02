@@ -1,16 +1,19 @@
 import { createReducer, on } from "@ngrx/store";
 import { Order } from "src/app/shared/models/order.model";
+import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
 import { OrderApiActions, OrderPageActions, OrderRouterActions } from "./actions";
 
 export interface OrderState {
     orders: Order[];
     selectedOrderId: string;
+    selectedOrderWorkflow: OrderWorkflow;
     error: any;
 }
 
 const initialState: OrderState = {
     orders: [],
     selectedOrderId: null,
+    selectedOrderWorkflow: null,
     error: null,
 }
 

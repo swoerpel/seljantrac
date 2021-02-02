@@ -32,7 +32,6 @@ export class EditListComponent implements OnInit, AfterViewInit,OnChanges {
 
   ngOnInit(): void {
     this.displayedColumns = ['index',...Object.keys(head(this.data)),'action'];
-    console.log('text',this.text)
   }
 
   ngAfterViewInit() {

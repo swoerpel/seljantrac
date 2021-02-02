@@ -1,0 +1,24 @@
+<div class="row row__text">
+    <div class="col" *ngFor="let dateColumn of orderWorkflowSteps">
+        <div class="step step__title">{{dateColumn.step}}:</div> 
+        <div class="step">{{dateColumn.date}}</div> 
+    </div>
+</div>
+<div class="row row__bar">
+    <svg style="width:100%" [attr.height]="barHeight">
+          <rect width="100%" 
+                height="100%" 
+                rx="4"
+                ry="4"
+                class="bar" />
+          <rect [attr.width]="(percentFilled * 100)+'%'" 
+                height="100%" 
+                rx="4"
+                ry="4"
+                [attr.fill]="barFill"/>
+    </svg>
+</div>
+<div class="buttons">
+    <button mat-raised-button class="buttons buttons__revert">Revert</button>
+    <button mat-raised-button class="buttons buttons__advance">Advance</button>
+</div>

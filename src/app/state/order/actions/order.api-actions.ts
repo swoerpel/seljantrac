@@ -20,3 +20,8 @@ export const LoadOrdersError = createAction(
     '[Order Api] Load Order Error',
     props<{err: any}>()
 )
+
+export const CreateOrderWorkflow = createAction(
+    '[Order Api] Create Order Workflow',
+    props<{orderId: string}>()
+)

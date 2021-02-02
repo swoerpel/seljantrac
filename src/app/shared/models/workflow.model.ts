@@ -1,12 +1,9 @@
-export interface Workflow {
-    id: string;
-    name: string;
-    stepIds: string[];
-}
+import { WorkflowStepType } from "../enums/workflow.enum";
 
-export interface WorkflowStep {
+
+export interface OrderWorkflow {
     id: string;
-    name: string;
-    description?: string;
-    startDate: Date;
+    created: any;
+    started: any;
+    completed: any;
 }

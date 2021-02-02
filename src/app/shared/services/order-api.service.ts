@@ -9,6 +9,7 @@ import { formatDate } from "@angular/common";
 import { DEFAULT_LOCALE, SHORT_DATE_FORMAT } from "../constants/date.constants";
 import { uid } from 'uid';
 import * as firebase from 'firebase/app';
+import { WorkflowStepType } from "../enums/workflow.enum";
 
 @Injectable({
     providedIn: 'root'
@@ -30,19 +31,13 @@ export class OrderApiService {
                         SHORT_DATE_FORMAT,
                         DEFAULT_LOCALE
                     );
-                    let createdOn: string = formatDate(
-                        order.createdOn.toDate(),
-                        SHORT_DATE_FORMAT,
-                        DEFAULT_LOCALE
-                    );
-                    return {...order,dueDate,createdOn} as Order
+                    return {...order,dueDate} as Order
                 });
             })
         )
     }
 
     public createOrder(order: Order): Observable<Order>{
-        order = {...order, createdOn: firebase.default.firestore.FieldValue.serverTimestamp()};
         const id = uid(6);
         return from(this.db.collection<any>('orders').doc(id).set(order)).pipe(
             map((_)=>({...order,id}))
