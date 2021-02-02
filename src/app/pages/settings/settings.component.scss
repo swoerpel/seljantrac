@@ -3,6 +3,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    margin-top: 2rem;
 }
 
 .row{
@@ -22,5 +23,9 @@ tr,th{
 
 tr:nth-child(even) {
     background-color: var(--color-medium-very-light);
+}
+
+.add-button{
+    margin-left: 2rem;
 }
 

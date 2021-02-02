@@ -26,7 +26,6 @@ export class EditListComponent implements OnInit, AfterViewInit,OnChanges {
 
   public displayedColumns: string[];
 
-
   public dataSource: MatTableDataSource<any>;
 
   constructor() { }
@@ -49,7 +48,11 @@ export class EditListComponent implements OnInit, AfterViewInit,OnChanges {
     if(!!this.table){
       this.table.renderRows();
     }
-    
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   removeItem(item){

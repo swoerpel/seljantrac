@@ -27,11 +27,29 @@ export const materialReducer = createReducer<MaterialState>(
             error: action.err,
         }
     }),
-
     on(MaterialRouterActions.LoadMaterials, (state, action): MaterialState => {
         return {
             ...state,
             error: null
+        }
+    }),
+
+    on(MaterialApiActions.CreateMaterialSuccess, (state, action): MaterialState => {
+        return {
+            ...state,
+            materials: [...state.materials, action.material]
+        }
+    }),
+    on(MaterialApiActions.DeleteMaterialSuccess, (state, action): MaterialState => {
+        return {
+            ...state,
+            materials: state.materials.filter(c => c.id !== action.materialId)
+        }
+    }),
+    on(MaterialApiActions.DeleteMaterialError, (state, action): MaterialState => {
+        return {
+            ...state,
+            error: action.err,
         }
     }),
 );

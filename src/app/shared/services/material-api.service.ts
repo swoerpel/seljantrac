@@ -4,6 +4,7 @@ import { Store } from "@ngrx/store";
 import { head, last } from 'lodash';
 import { from, Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { uid } from "uid";
 import { Material } from "../models/Material.model";
 
 
@@ -23,4 +24,16 @@ export class MaterialApiService {
         )
     }
 
+    public createMaterial(name: string): Observable<Material>{
+        let id = uid(6);
+        return from(
+            this.db.collection<any>('materials')
+                .doc(id)
+                .set({name})
+            ).pipe(map(_=>({id,name})))
+    }
+
+    public deleteMaterial(materialId: string): Observable<void>{
+        return from(this.db.collection<any>('materials').doc(materialId).delete())
+    }
 }

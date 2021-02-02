@@ -22,7 +22,7 @@ export interface Order{
 export interface ViewOrder {
     id: string;
     name: string;
-    materialType: string;
+    materialName: string;
     customerName: string;
     creatorName: string;
     dueDate: Date;

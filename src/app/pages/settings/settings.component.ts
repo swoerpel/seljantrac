@@ -8,6 +8,7 @@ import { Customer } from 'src/app/shared/models/customer.model';
 import { Material } from 'src/app/shared/models/material.model';
 import { CustomerPageActions } from 'src/app/state/customer/actions';
 import { CustomerSelectors } from 'src/app/state/customer/selectors';
+import { MaterialPageActions } from 'src/app/state/material/actions';
 import { MaterialSelectors } from 'src/app/state/material/selectors';
 
 @Component({
@@ -31,6 +32,7 @@ export class SettingsComponent implements OnInit {
   }
 
   public customerName: FormControl = new FormControl('',[Validators.required]);
+  public materialName: FormControl = new FormControl('',[Validators.required]);
 
   constructor(
     private store: Store,
@@ -58,10 +60,15 @@ export class SettingsComponent implements OnInit {
 
 
   // TODO: Dig into materials a bit more and add these calls
-  public removeMaterial(customer){
+  public removeMaterial(material){
+    console.log('material',material)
+    const materialId = material.id;
+    this.store.dispatch(MaterialPageActions.DeleteMaterial({materialId}))
   }
 
-  public addMaterial(name){
+  public createMaterial(){
+    const name = this.materialName.value;
+    this.store.dispatch(MaterialPageActions.CreateMaterial({name}))
   }
 
 

@@ -3,17 +3,20 @@
     <app-edit-list [data]="customers"
                    [text]="customerSettingsText"
                    (removeAction)="removeCustomer($event)">
-        <mat-form-field appearance="outline" >
-            <mat-label>New {{customerSettingsText.title}}</mat-label>
-            <input [formControl]="customerName" 
-                matInput 
-                placeholder="new {{customerSettingsText.title}}" >
-        </mat-form-field>
-        <button (click)="addCustomer()"
-                mat-raised-button 
-                class="add-button button">
-            <mat-icon class="add-icon">add_box</mat-icon>
-        </button>
+        <div>
+            <mat-form-field>
+                <mat-label>New {{customerSettingsText.title}}</mat-label>
+                <input [formControl]="customerName" 
+                       matInput 
+                       autocomplete="off"
+                       placeholder="new {{customerSettingsText.title}}" >
+            </mat-form-field>
+            <button (click)="addCustomer()"
+                    mat-raised-button 
+                    class="add-button button">
+                <mat-icon class="add-icon">add_box</mat-icon>
+            </button>
+        </div>
     </app-edit-list>
 </ng-container>
 
@@ -21,6 +24,19 @@
     <app-edit-list [data]="materials"
                    [text]="materialSettingsText"
                    (removeAction)="removeMaterial($event)">
-        <div class="todo">TODO: ADD FORM CONTROLS TO CREATE MATERIALS</div>
+        <div>
+            <mat-form-field>
+                <mat-label>New {{materialSettingsText.title}}</mat-label>
+                <input [formControl]="materialName" 
+                       matInput 
+                       autocomplete="off"
+                       placeholder="new {{materialSettingsText.title}}" >
+            </mat-form-field>
+            <button (click)="createMaterial()"
+                    mat-raised-button 
+                    class="add-button button">
+                <mat-icon class="add-icon">add_box</mat-icon>
+            </button>
+        </div>
     </app-edit-list>
 </ng-container>

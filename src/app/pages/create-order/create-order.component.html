@@ -18,7 +18,7 @@
         <mat-label>Material</mat-label>
         <mat-select [formControl]="formGroup.controls.materialId" >
           <mat-option *ngFor="let material of (materials$ | async)" [value]="material.id">
-            {{material.type}}
+            {{material.name}}
           </mat-option>
         </mat-select>
     </mat-form-field>

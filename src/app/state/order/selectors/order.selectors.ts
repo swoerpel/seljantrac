@@ -47,18 +47,16 @@ export const GetSelectedOrder = createSelector(
 export const GetViewOrders = createSelector(
     GetCompleteOrders,
     (completeOrders: CompleteOrder[]): ViewOrder[] => {
-        let orders: ViewOrder[] = completeOrders.map((order)=>{
+        return completeOrders.map((order)=>{
             return {
                 id: order.id,
                 name: order.name,
-                materialType: order.material?.type,
+                materialName: order.material?.name,
                 customerName: order.customer?.name,
                 creatorName: `${order.creator?.firstName} ${order.creator?.lastName}`,
                 dueDate: order.dueDate,
             }
         })
-        // let invalid = orders.some((order)=>Object.values(order).includes(undefined))
-        return orders;
     }
  
 )
