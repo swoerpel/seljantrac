@@ -36,9 +36,15 @@ export class WorkflowApiService {
         );
     }
 
-    public advanceWorkflow(orderId: string,nextStep: string): Observable<void>{
+    public advanceWorkflow(orderId: string,stepToAdvance: string): Observable<void>{
         return from(this.db.collection<any>('workflows').doc(orderId).update({
-            [nextStep]:firebase.default.firestore.FieldValue.serverTimestamp()
+            [stepToAdvance]:firebase.default.firestore.FieldValue.serverTimestamp()
+        }));
+    }
+
+    public revertWorkflow(orderId: string,stepToRevert: string): Observable<void>{
+        return from(this.db.collection<any>('workflows').doc(orderId).update({
+            [stepToRevert]:null
         }));
     }
 

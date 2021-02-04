@@ -20,12 +20,13 @@
 </div>
 <div class="buttons">
     <button (click)="revertAction()" 
-            [disabled]="furthestStep === 'created'" 
+            [disabled]="furthestStep === this.workflowSteps[0]" 
             mat-raised-button 
             class="buttons buttons__revert">
         Revert
     </button>
     <button (click)="advanceAction()" 
+            [disabled]="furthestStep === this.workflowSteps[this.workflowSteps.length - 1]" 
             mat-raised-button 
             class="buttons buttons__advance">
         Advance

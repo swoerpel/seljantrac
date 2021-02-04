@@ -18,6 +18,7 @@ interface DateColumn {
 })
 export class ThermometerComponent implements OnInit {
 
+  @Input() workflowSteps: string[] = DEFAULT_WORKFLOW_STEP_STRINGS;
   @Input() orderWorkflow: OrderWorkflow;
   @Output() advance: EventEmitter<string> = new EventEmitter();
   @Output() revert: EventEmitter<string> = new EventEmitter();
@@ -26,16 +27,16 @@ export class ThermometerComponent implements OnInit {
   public barFill = 'var(--color-accent)';
   public percentFilled: any;
 
-  // TODO: THESE ARE 100% CORRLATED WITH THE WORKFLOW SEQUENCE
-  private barFills = {
-    created: 0.1,
-    started: 0.5,
-    completed: 1,
-  }
-
   public furthestStep: string;
 
   public orderWorkflowSteps: DateColumn[];
+
+  // TODO: THESE ARE 100% CORRLATED WITH THE WORKFLOW SEQUENCE
+  private barFills = {
+    [this.workflowSteps[0]]: 0.1,
+    [this.workflowSteps[1]]: 0.5,
+    [this.workflowSteps[2]]: 1,
+  }
 
   constructor() { }
 
@@ -52,8 +53,8 @@ export class ThermometerComponent implements OnInit {
       .map(([step,st]:[string,ServerTimestamp]): DateColumn => 
         (st === null) ? {step,date: 'None'} : {step,date: serverTimestampToDate(st)}
     ).sort((a: DateColumn, b: DateColumn) => 
-      DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(a.step) -
-      DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(b.step)
+      this.workflowSteps.indexOf(a.step) -
+      this.workflowSteps.indexOf(b.step)
     );
     this.furthestStep = last(this.orderWorkflowSteps.filter((ow)=>ow.date !== 'None').map(dc=>dc.step));
     this.percentFilled = this.barFills[this.furthestStep]

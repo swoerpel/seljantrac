@@ -9,7 +9,7 @@ import { WorkflowApiService } from "src/app/shared/services/workflow-api.service
 import { OrderApiActions, OrderRouterActions } from "../order/actions";
 import { WorkflowApiActions, WorkflowPageActions, WorkflowRouterActions } from "./actions";
 import { WorkflowSelectors } from "./selectors";
-import { head } from 'lodash';
+import { head, last } from 'lodash';
 
 @Injectable({
     providedIn: 'root'
@@ -53,6 +53,7 @@ export class WorkflowEffects {
                 WorkflowRouterActions.LoadOrderWorkflows,
                 WorkflowApiActions.CreateOrderWorkflowSuccess,
                 WorkflowApiActions.AdvanceOrderWorkflowStateSuccess,
+                WorkflowApiActions.RevertOrderWorkflowStateSuccess,
             ),
             switchMap(() => {
                 return this.workflowApiService.loadOrderWorkflows().pipe(
@@ -74,16 +75,39 @@ export class WorkflowEffects {
             switchMap(([orderId,selectedOrderWorkflow]: [string,OrderWorkflow]) => {
                 // this 100% needs to be composed into a general function
                 // thermometer.component.ts implements a version of this
-                const nextStep = head(Object.entries(selectedOrderWorkflow)
-                .sort(([k1,_],[k2,__]) => 
-                    DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(k1) - 
-                    DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(k2)
-                ).find(([_,value])=>!value))
+                const stepToAdvance = head(
+                    Object.entries(selectedOrderWorkflow).sort(([k1,_],[k2,__]) => 
+                        DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(k1) - 
+                        DEFAULT_WORKFLOW_STEP_STRINGS.indexOf(k2)
+                    ).find(([_,value])=>!value)
+                );
 
-                return this.workflowApiService.advanceWorkflow(orderId,nextStep).pipe(
+                return this.workflowApiService.advanceWorkflow(orderId,stepToAdvance).pipe(
                     map((_) => WorkflowApiActions.AdvanceOrderWorkflowStateSuccess()),
                     catchError((err) => {
                         return of(WorkflowApiActions.AdvanceOrderWorkflowStateError({err}))
+                    })
+                )
+            })
+        )   
+    });
+
+    revertWorkflowState$ = createEffect((): any => {
+        return this.actions$.pipe(
+            ofType(WorkflowPageActions.RevertOrderWorkflowState),
+            map(p=>p.orderId),
+            withLatestFrom(this.store.select(WorkflowSelectors.GetSelectedOrderWorkflow)),
+            switchMap(([orderId,selectedOrderWorkflow]: [string,OrderWorkflow]) => {
+                let stepToRevert = last(DEFAULT_WORKFLOW_STEP_STRINGS);
+                DEFAULT_WORKFLOW_STEP_STRINGS.forEach((step: string,i: number)=>{
+                    if(selectedOrderWorkflow[step] === null && i !== 0){
+                        stepToRevert = DEFAULT_WORKFLOW_STEP_STRINGS[i - 1];
+                    }
+                })
+                return this.workflowApiService.revertWorkflow(orderId, stepToRevert).pipe(
+                    map((_) => WorkflowApiActions.RevertOrderWorkflowStateSuccess()),
+                    catchError((err) => {
+                        return of(WorkflowApiActions.RevertOrderWorkflowStateError({err}))
                     })
                 )
             })

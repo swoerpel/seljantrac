@@ -39,15 +39,12 @@ export class ViewOrderComponent implements OnInit {
       })
     ).subscribe();
 
-
-    this.completeOrder$ = this.store.select(OrderSelectors.GetSelectedCompleteOrder).pipe(
-    );
-    this.orderWorkflow$ = this.store.select(WorkflowSelectors.GetSelectedOrderWorkflow).pipe(
-      filter(ow=>!!ow),
-    );
+    this.completeOrder$ = this.store.select(OrderSelectors.GetSelectedCompleteOrder);
+    this.orderWorkflow$ = this.store.select(WorkflowSelectors.GetSelectedOrderWorkflow).pipe(filter(ow=>!!ow));
   }
 
   public revertWorkflowState(orderId: string){
+    this.store.dispatch(WorkflowPageActions.RevertOrderWorkflowState({orderId}))
   }
 
   public advanceWorkflowState(orderId: string){

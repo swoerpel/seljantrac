@@ -11,3 +11,10 @@ export const AdvanceOrderWorkflowState = createAction(
 );
 
 
+
+export const RevertOrderWorkflowState = createAction(
+    '[View Order Page] Revert Order Workflow State',
+    props<{orderId: string;}>()
+);
+
+

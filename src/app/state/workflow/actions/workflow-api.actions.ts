@@ -30,3 +30,12 @@ export const AdvanceOrderWorkflowStateError = createAction(
     '[Api] Advance Order Workflow State Error',
     props<{err: any}>(),
 )
+
+export const RevertOrderWorkflowStateSuccess = createAction(
+    '[Api] Revert Order Workflow State Success',
+)
+
+export const RevertOrderWorkflowStateError = createAction(
+    '[Api] Revert Order Workflow State Error',
+    props<{err: any}>(),
+)
