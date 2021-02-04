@@ -19,8 +19,8 @@ export class MaterialApiService {
 
     public loadMaterials(): Observable<Material[]>{
         return from(this.db.collection<any>('materials').get()).pipe(
-            map((res: any)=>res.docs.map((d)=>[d.id,d.data()])),
-            map((mats:any[])=>mats.map((m)=>({...last(m),id:head(m)}))),
+            map((res: any)=>res.docs.map((d)=>[d.data(),d.id])),
+            map((mats:any[])=>mats.map((m)=>({...head(m),id:last(m)}))),
         )
     }
 

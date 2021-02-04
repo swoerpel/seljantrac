@@ -36,5 +36,14 @@
     <textarea [formControl]="formGroup.controls.notes" matInput></textarea>
 </mat-form-field>
 
+<ng-container *ngIf="(orderFiles$ | async) as orderFiles">
+  <app-file-upload 
+    (upload)="uploadFile($event)"
+    (remove)="removeFile($event)"
+    [files]="orderFiles"
+  ></app-file-upload>
+</ng-container>
+
+
 <button [disabled]="formGroup.invalid" class="button" (click)="createOrder()"mat-raised-button>Create</button>
 

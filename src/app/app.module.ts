@@ -16,6 +16,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 import { environment } from 'src/environments/environment';
 import { CreateOrderComponent } from './pages/create-order/create-order.component';
@@ -34,6 +35,9 @@ import { EditListComponent } from './components/edit-list/edit-list.component';
 import { workflowReducer } from './state/workflow/workflow.reducer';
 import { WorkflowEffects } from './state/workflow/workflow.effects';
 import { ThermometerComponent } from './components/thermometer/thermometer.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { fileReducer } from './state/file/file.reducer';
+import { FileEffects } from './state/file/file.effects';
 
 const stateSlices = {
   user: userReducer,
@@ -41,6 +45,9 @@ const stateSlices = {
   customer: customerReducer,
   material: materialReducer,
   workflow: workflowReducer,
+
+  // reusable slice anywhere files in storage need to be manipulated
+  file: fileReducer, 
 }
 
 const stateEffects = [
@@ -49,6 +56,7 @@ const stateEffects = [
   CustomerEffects,
   MaterialEffects,
   WorkflowEffects,
+  FileEffects
 ]
 
 
@@ -67,6 +75,7 @@ const stateEffects = [
     ViewOrderComponent,
     EditListComponent,
     ThermometerComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +84,7 @@ const stateEffects = [
     FormsModule, 
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     NgxAuthFirebaseUIModule.forRoot(environment.firebase,() => 'seljantrac_factory',environment.firebase_auth),
     StoreModule.forRoot(stateSlices),
     EffectsModule.forRoot(stateEffects),

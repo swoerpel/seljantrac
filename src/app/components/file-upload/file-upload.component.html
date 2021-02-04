@@ -1,0 +1,18 @@
+<!-- <input type="file" (change)="uploadFile($event)">
+<button (click)="downloadFile()">download</button> -->
+
+<div class="file-list">
+    <ng-container *ngFor="let file of files">
+        file list
+    </ng-container>
+</div>
+
+<mat-form-field class="upload-input-field" (click)="fileInput.click()">
+    <mat-label>Upload file</mat-label>
+    <input class="upload-input" matInput disabled>
+    <button mat-icon-button matSuffix><mat-icon>attach_file</mat-icon></button>
+    <input hidden (change)="uploadFile($event)" #fileInput type="file" id="file">
+</mat-form-field>
+
+
+
