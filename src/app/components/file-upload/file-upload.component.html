@@ -1,8 +1,8 @@
 <div class="list">
     <ng-container *ngFor="let file of files">
         <div class="list list__item">
-            <div class="list list__item list__item__name">{{file?.name}}</div>
-            <mat-icon (click)="removeFile(file)" class="remove-circle">remove_circle_outline</mat-icon>
+            <button mat-raised-button class="list list__item list__item__name">{{file?.name}}</button>
+            <mat-icon (click)="deleteFile(file)" class="remove-circle">remove_circle_outline</mat-icon>
         </div>
     </ng-container>
 </div>

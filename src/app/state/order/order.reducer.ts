@@ -1,4 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
+import { FileUpload } from "src/app/shared/models/order-file.model";
 import { Order } from "src/app/shared/models/order.model";
 import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
 import { OrderApiActions, OrderPageActions, OrderRouterActions } from "./actions";
@@ -7,6 +8,7 @@ export interface OrderState {
     orders: Order[];
     selectedOrderId: string;
     selectedOrderWorkflow: OrderWorkflow;
+    selectedOrderFileUploads: FileUpload[];
     error: any;
 }
 
@@ -14,6 +16,7 @@ const initialState: OrderState = {
     orders: [],
     selectedOrderId: null,
     selectedOrderWorkflow: null,
+    selectedOrderFileUploads: null,
     error: null,
 }
 
@@ -61,6 +64,26 @@ export const orderReducer = createReducer<OrderState>(
         return {
             ...state,
             selectedOrderId: action.orderId,
+        }
+    }),
+    on(OrderRouterActions.ResetSelectedOrder, (state, action): OrderState => {
+        return {
+            ...state,
+            selectedOrderId: null,
+            selectedOrderWorkflow: null,
+            selectedOrderFileUploads: [],
+        }
+    }),
+    on(OrderApiActions.LoadOrderFilesSuccess, (state, {fileUploads}): OrderState => {
+        return {
+            ...state,
+            selectedOrderFileUploads: fileUploads,
+        }
+    }),
+    on(OrderApiActions.LoadOrderFilesError, (state, action): OrderState => {
+        return {
+            ...state,
+            error: action.err,
         }
     }),
 );

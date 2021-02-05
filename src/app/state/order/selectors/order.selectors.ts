@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store"
 import { Customer } from "src/app/shared/models/customer.model";
 import { Material } from "src/app/shared/models/material.model";
+import { FileUpload } from "src/app/shared/models/order-file.model";
 import { Order, CompleteOrder, ViewOrder } from "src/app/shared/models/order.model";
 import { User } from "src/app/shared/models/User.model";
 import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
@@ -53,6 +54,11 @@ export const GetSelectedOrderId = createSelector(
 export const GetSelectedOrderWorkflow = createSelector(
     orderFeatureState,
     (state: OrderState): OrderWorkflow => state.selectedOrderWorkflow
+)
+
+export const GetSelectedOrderFileUploads = createSelector(
+    orderFeatureState,
+    (state: OrderState): FileUpload[] => state.selectedOrderFileUploads
 )
 
 export const GetViewOrders = createSelector(

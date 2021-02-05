@@ -11,6 +11,8 @@ import { Order } from "src/app/shared/models/order.model";
 import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
 import { OrderApiService } from "src/app/shared/services/order-api.service";
 import { WorkflowApiService } from "src/app/shared/services/workflow-api.service";
+import { FileActions } from "../file/actions";
+import { FileSelectors } from "../file/selectors";
 import { UserSelectors } from "../user/selectors";
 import { WorkflowApiActions, WorkflowPageActions } from "../workflow/actions";
 import { OrderApiActions, OrderPageActions, OrderRouterActions } from "./actions";
@@ -39,11 +41,25 @@ export class OrderEffects {
         );
     })
 
+    resetSelectedOrder$ = createEffect(():any => {
+        return this.actions$.pipe(
+            ofType(ROUTER_NAVIGATED),
+            tap(console.log),
+            filter(({payload:{event:{url}}})=> url === '/home'),
+            switchMap(() => [
+                OrderRouterActions.ResetSelectedOrder(),
+            ])
+        );
+    })
+
     loadSelectedOrderWorkflow$ = createEffect(():any => {
         return this.actions$.pipe(
             ofType(OrderPageActions.SelectOrder),
             map(p=>p.orderId),
-            switchMap((orderId: string) => of(WorkflowPageActions.LoadSelectedOrder({orderId})))
+            switchMap((orderId: string) => [
+                WorkflowPageActions.LoadSelectedOrder({orderId}),
+                OrderPageActions.LoadOrderFiles({orderId}),
+            ])
         );
     })
 
@@ -73,8 +89,9 @@ export class OrderEffects {
                     tap((_)=>this.router.navigate(['home'])),
                     switchMap((order: Order) => [
                         OrderApiActions.CreateOrderSuccess({order}),
-                        OrderRouterActions.LoadOrders(),
+                        // OrderRouterActions.LoadOrders(),
                         OrderApiActions.CreateOrderWorkflow({orderId:order.id}),
+                        OrderApiActions.UpdateOrderFiles({orderId:order.id})
                     ]),
                     catchError((err)=>of(OrderApiActions.CreateOrderError({err})))
                 )
@@ -82,18 +99,32 @@ export class OrderEffects {
         )   
     });
 
-    addOrderFile$ = createEffect((): any => {
+    loadOrderFiles$ = createEffect((): any => {
         return this.actions$.pipe(
-            ofType(OrderPageActions.AddOrderFile),
-            map(p=>p.fileUpload),
-            withLatestFrom(this.store.select(OrderSelectors.GetSelectedOrderId)),
-            switchMap(([fileUpload, orderId]: [FileUpload,string]) => {
-                return this.orderApiService.addFileToOrder(fileUpload,orderId).pipe(
-                    map((res)=>{
-                        console.log('res',res)
-                        return OrderApiActions.AddOrderFileSuccess();
-                    }),
-                    catchError((err)=>of(OrderApiActions.AddOrderFileError({err})))
+            ofType(OrderPageActions.LoadOrderFiles),
+            switchMap(({orderId}) => {
+                return this.orderApiService.loadOrderFiles(orderId).pipe(
+                    switchMap((fileUploads: FileUpload[])=>[
+                        OrderApiActions.LoadOrderFilesSuccess({orderId,fileUploads}),
+                    ]),
+                    catchError((err)=>of(OrderApiActions.LoadOrderFilesError({err})))
+                )
+            })
+        )   
+    });
+
+    updateOrderFiles$ = createEffect((): any => {
+        return this.actions$.pipe(
+            ofType(OrderApiActions.UpdateOrderFiles),
+            map(p=>p.orderId),
+            withLatestFrom(this.store.select(FileSelectors.GetFileUploads)),
+            switchMap(([orderId,fileUploads]:[string,FileUpload[]]) => {
+                return this.orderApiService.updateOrderFiles(orderId,fileUploads).pipe(
+                    switchMap(()=>[
+                        OrderApiActions.UpdateOrderFilesSuccess(),
+                        OrderRouterActions.LoadOrders()
+                    ]),
+                    catchError((err)=>of(OrderApiActions.UpdateOrderFilesError({err})))
                 )
             })
         )   

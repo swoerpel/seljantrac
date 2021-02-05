@@ -10,3 +10,7 @@ export const ClearRegisteredFiles = createAction(
     '[File Upload] Clear Registered Files',
 )
 
+export const RemoveFileUpload = createAction(
+    '[File Upload] Remove File Upload',
+    props<{fileUpload: FileUpload}>()
+)

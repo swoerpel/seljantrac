@@ -51,16 +51,17 @@ export class FileUploadComponent implements OnInit, OnChanges {
     if(!!file){
       this.displayProgressBar = true;
       const fileId = uid();
-      const {uploadPercentage$, done$} =this.fileApiService.uploadFile(file,fileId);
-      uploadPercentage$.pipe(
-        tap((v: number)=>{
-          this.progress = v / 100;
-        }),
-      ).subscribe();
+      const fileUpload: FileUpload = {
+        id:fileId,
+        name: file?.name,
+        type: file.type,
+        size: file.size,
+      }
+      const {uploadPercentage$, done$} = this.fileApiService.uploadFile(file,fileId);
+      uploadPercentage$.subscribe((v: number)=>this.progress = v / 100);
       done$.pipe(
         last(),
         tap(()=>{
-          let fileUpload: FileUpload = {fileId,name: file?.name}
           this.uploadComplete.emit(fileUpload);
           this.displayProgressBar = false;
         })
@@ -68,13 +69,11 @@ export class FileUploadComponent implements OnInit, OnChanges {
     }
   }
 
-  removeFile(event){
-    console.log("remove",event)
-    this.remove.emit();
-  }
-
-  cancel(event){
-    console.log('event',event)
+  deleteFile(fileUpload: FileUpload){
+    this.fileApiService.deleteFile(fileUpload).pipe(
+      first(),
+      tap(() => this.remove.emit(fileUpload.id))
+    ).subscribe();
   }
 
 

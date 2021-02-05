@@ -4,13 +4,15 @@ import { uid } from "uid";
 import { FileUpload, OrderFile } from "src/app/shared/models/order-file.model";
 import { Observable, of } from "rxjs";
 
-export interface FFile extends File {
-    id: string;
-}
+
+
+// The initial purpose of this state slice is to hold file data
+// before an order (and orderId) have been created
+// on create, these files get assigned to the order and cleared
+// from temporary storage
+
 
 export interface FileState {
-    // Storing this means we have access to all files
-    // if multiple file uploads
     fileUploads: FileUpload[];
 }
 
@@ -24,6 +26,12 @@ export const fileReducer = createReducer<FileState>(
         return {
             ...state,
             fileUploads: [...state.fileUploads,action.fileUpload]
+        }
+    }),
+    on(FileActions.RemoveFileUpload, (state, action): FileState => {
+        return {
+            ...state,
+            fileUploads: state.fileUploads.filter((fi: FileUpload)=>fi.id === action.fileUpload.id)
         }
     }),
 

@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 import { map, switchMap, takeUntil, tap } from "rxjs/operators";
+import { FileUpload } from "src/app/shared/models/order-file.model";
 import { FileApiService } from "src/app/shared/services/file-upload-api.service";
 import { FileActions } from "./actions";
 
@@ -20,19 +21,10 @@ export class FileEffects {
 
     // init$ = createEffect(():any => {
     //     return this.actions$.pipe(
-    //         ofType(FileActions.UploadFile),
-    //         map(a=>a.file),
-    //         switchMap((file: File) => {
-    //             console.log("FFFF",file)
-    //             const {done$, uploadPercentage$} = this.fileApiService.uploadFile(file)
-    //             uploadPercentage$.pipe(
-    //                 tap((val)=>{
-    //                     this.store.dispatch(FileActions.UploadFileProgress({val}))
-    //                 }),
-    //                 takeUntil(done$)
-    //             ).subscribe();
-    //             return of(FileActions.Default());
-    //         })
+    //         // ofType(FileActions.DeleteFile),
+    //         // switchMap((fileUpload: FileUpload) => {
+    //             // return of(FileActions.Default());
+    //         // })
     //     );
     // })
 

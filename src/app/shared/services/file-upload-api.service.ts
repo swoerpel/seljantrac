@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
+import { FileUpload } from '../models/order-file.model';
 
 
 export interface FileUploadResponse {
@@ -28,32 +29,29 @@ export class FileApiService {
   ) {}
 
   uploadFile(file,fileId): FileUploadResponse {
-    const task = this.storage.upload(`/seljantrac/${fileId}`, file);
+    const upload$ = this.storage.upload(`/seljantrac/${fileId}`, file);
     return {
-      uploadPercentage$: task.percentageChanges(),
-      done$: task.snapshotChanges().pipe(
+      uploadPercentage$: upload$.percentageChanges(),
+      done$: upload$.snapshotChanges().pipe(
         finalize(() => {
           const fileRef = this.storage.refFromURL(`${this.FILE_PATH}`);
           return fileRef.getDownloadURL();
         }))
     };
-    // // observe percentage changes
-    // this.uploadPercent = task.percentageChanges();
-  
-    // this.uploadPercent.subscribe(console.log);
-    // // get notified when the download URL is available
-    // task.snapshotChanges().pipe(
-    //     finalize(() => this.downloadURL = fileRef.getDownloadURL())
-    // ).subscribe()
   }
 
-  public getFileDownloadURL(): Observable<string>{
-    return this.storage.ref('seljantrac/temp_text').getDownloadURL();
+  deleteFile(fileUpload: FileUpload): Observable<void> {
+    return this.storage.ref(`/seljantrac/${fileUpload.id}`).delete();
   }
 
-  download(url: string): Observable<Blob> {
-    return this.http.get(url, {
-      responseType: 'blob'
-    })
+  public download(fileUpload: FileUpload): Observable<any>{
+    return this.storage.ref(`seljantrac/${fileUpload.id}`).getDownloadURL().pipe(
+      switchMap((url)=> {
+        return this.http.get(url, {
+          responseType: 'blob'
+        })
+      })
+    );
   }
+
 }

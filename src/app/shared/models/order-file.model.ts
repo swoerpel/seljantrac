@@ -10,7 +10,8 @@ export interface OrderFile{
 
 
 export interface FileUpload {
-    fileId: string;
+    id: string;
     name: string;
-    url?: string;
+    type: string;
+    size: number;
 }

@@ -9,5 +9,17 @@
             [orderWorkflow]="orderWorkflow">
         </app-workflow-thermometer>
     </ng-container>
-    <div class="subtitle u-margin-top-m"><strong>Notes:</strong> {{completeOrder.notes}}</div>
+    <div class="subtitle u-margin-top-m u-margin-bottom-m"><strong>NOTES:</strong> {{completeOrder.notes}}</div>
 </ng-container>
+
+<ng-container *ngIf="(fileUploads$ | async) as fileUploads">
+    <div class="file-list">
+        <div class="subtitle"><strong>FILES:</strong></div>
+        <ng-container *ngFor="let file of fileUploads">
+            <button (click)="downloadFile(file)" mat-raised-button class="file-list file-list__item">{{file.name}}</button>
+        </ng-container>
+    </div>
+</ng-container>
+
+
+

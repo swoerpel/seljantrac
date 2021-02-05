@@ -12,7 +12,8 @@ export const SelectOrder = createAction(
     props<{orderId: string}>()
 )
 
-export const AddOrderFile = createAction(
-    '[Create Order Page] Add OrderFile',
-    props<{fileUpload: FileUpload}>()
+export const LoadOrderFiles = createAction(
+    '[Home Page] Load Order Files',
+    props<{orderId: string}>()
 )
+

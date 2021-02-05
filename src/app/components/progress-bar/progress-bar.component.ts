@@ -19,7 +19,6 @@ export class ProgressBarComponent implements OnChanges {
 
   ngOnChanges(){
     const colorMachine: chroma.Scale = chroma.scale(this.colors)
-    console.log('this.progress',this.progress)
     this.fillColor = colorMachine(this.progress).hex();
   }
 

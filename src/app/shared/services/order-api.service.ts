@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore, DocumentReference } from "@angular/fire/firestore";
 import { Store } from "@ngrx/store";
 import { from, Observable, of } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 import { Order } from "../models/order.model";
 import { head, last, omit} from 'lodash';
 import { formatDate } from "@angular/common";
@@ -24,7 +24,10 @@ export class OrderApiService {
 
     public loadOrders(): Observable<Order[]>{
         return from(this.db.collection<any>('orders').get()).pipe(
-            map((res: any) => res.docs.map((d)=>({...d.data(),id:d.id}))),
+            map((res: any) => res.docs.map((d)=>{
+                // d.ref.collection('files').get().docs.forEach((e)=>console.log("e.data",e.data()))
+                return {...d.data(),id:d.id}
+            })),
             map((orders: Order[])=>{
                 return orders.map((order: any) => {
                     let dueDate: string = formatDate(
@@ -34,7 +37,8 @@ export class OrderApiService {
                     );
                     return {...order,dueDate} as Order
                 });
-            })
+            }),
+            tap(console.log),
         )
     }
 
@@ -49,16 +53,25 @@ export class OrderApiService {
 
     }
 
-    public addFileToOrder(fileUpload:FileUpload, orderId:string): Observable<any>{
+    public updateOrderFiles(orderId: string, fileUploads: FileUpload[]): Observable<any>{
+        const batch = this.db.firestore.batch();
+        const fileCollectionRef = this.db.collection<any>('orders').doc(orderId).collection('files')
+        fileUploads.forEach((fileUpload: FileUpload) => {
+            const fileDocRef = fileCollectionRef.doc(fileUpload.id).ref;
+            batch.set(fileDocRef,{
+                name: fileUpload.name
+            })
+        })
+        return from(batch.commit())
+    }
 
-        return of(null);
-        // return from(
-        //     this.db.collection<any>('orders')
-        //         .doc(orderId)
-        //         .collection('files')
-        //         .doc(fileUpload.fileId)
-        //         .set(omit(fileUpload,'fileId'))
-        //     )
+    public loadOrderFiles(orderId: string): Observable<any>{
+        const files = this.db.collection<any>('orders').doc(orderId).collection('files').get()
+        return files.pipe(
+            map((res)=>{
+                return res.docs.map((d)=>({id:d.id,...d.data()}))
+            })
+        )
     }
 
 }

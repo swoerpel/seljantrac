@@ -9,3 +9,17 @@
     // text-align: center;
     font-size: var(--m);
 }
+
+.file-list{
+    display: flex;
+    flex-direction: column;
+
+    &__item{
+        width: 20%;
+        flex-direction: row;
+        font-size: var(--m);
+        padding: 0.5rem 1rem;
+        margin: 0.5rem 1rem;
+    }
+
+}

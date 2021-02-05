@@ -45,7 +45,6 @@ export class CreateOrderComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private orderApiService: OrderApiService,
     private router: Router,
   ) { }
 
@@ -53,6 +52,8 @@ export class CreateOrderComponent implements OnInit {
     this.customers$ = this.store.select(CustomerSelectors.GetCustomers);
     this.materials$ = this.store.select(MaterialSelectors.GetMaterials);
     this.fileUploads$ = this.store.select(FileSelectors.GetFileUploads);
+
+    this.fileUploads$.subscribe(console.log);
   }
 
   createOrder(){
@@ -62,11 +63,10 @@ export class CreateOrderComponent implements OnInit {
   }
 
   fileUploadComplete(fileUpload: FileUpload) {
-    console.log("file UPLOADED",fileUpload)
     this.store.dispatch(FileActions.RegisterFileUpload({fileUpload}))
   }
 
-  removeFile(event){
-
+  removeFile(fileUpload: FileUpload){
+    this.store.dispatch(FileActions.RemoveFileUpload({fileUpload}))
   }
 }
