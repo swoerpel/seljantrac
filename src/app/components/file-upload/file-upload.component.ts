@@ -1,29 +1,71 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { first, switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, finalize, first, last, map, tap } from 'rxjs/operators';
+import { FileUpload } from 'src/app/shared/models/order-file.model';
 import { FileApiService } from 'src/app/shared/services/file-upload-api.service';
+import { uid } from 'uid';
+
+
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnChanges {
 
-  @Input() files: any[] = [];
-  @Output() upload: EventEmitter<File> = new EventEmitter<File>();
+  @Input() files: FileUpload[] = [];
+  @Output() uploadComplete: EventEmitter<FileUpload> = new EventEmitter<FileUpload>();
   @Output() remove: EventEmitter<any> = new EventEmitter<any>();
 
-  selectedFiles
-  constructor() { }
+  public uploadProgress$: Observable<number>;
+
+  public displayProgressBar: boolean = false;
+
+  public progress: number = 0;
+
+  public fileFormControl: FormControl = new FormControl();
+
+  constructor(
+    private fileApiService: FileApiService,
+  ) { }
 
   ngOnInit(): void {
   }
 
+
+  ngOnChanges(){
+    console.log("files",this.files)
+    
+    // this.displayProgressBar = true;
+  }
+
+
+  uploadFileClick(){
+    this.fileFormControl.reset()
+  }
+
   uploadFile(event){
-    this.selectedFiles = event.target.files;
     const file: File = event.target.files[0];
-    this.upload.emit(file);
+    if(!!file){
+      this.displayProgressBar = true;
+      const fileId = uid();
+      const {uploadPercentage$, done$} =this.fileApiService.uploadFile(file,fileId);
+      uploadPercentage$.pipe(
+        tap((v: number)=>{
+          this.progress = v / 100;
+        }),
+      ).subscribe();
+      done$.pipe(
+        last(),
+        tap(()=>{
+          let fileUpload: FileUpload = {fileId,name: file?.name}
+          this.uploadComplete.emit(fileUpload);
+          this.displayProgressBar = false;
+        })
+      ).subscribe();
+    }
   }
 
   removeFile(event){
@@ -31,22 +73,9 @@ export class FileUploadComponent implements OnInit {
     this.remove.emit();
   }
 
+  cancel(event){
+    console.log('event',event)
+  }
 
-
-  // downloadFile(){
-  //   this.fileApiService.getFileDownloadURL().pipe(
-  //     first(),
-  //     switchMap((downloadURL)=>this.fileApiService.download(downloadURL)),
-  //     tap((blob)=>{
-  //       console.log("blob",blob)
-  //       const a = document.createElement('a')
-  //       const objectUrl = URL.createObjectURL(blob)
-  //       a.href = objectUrl
-  //       a.download = 'archive';
-  //       a.click();
-  //       URL.revokeObjectURL(objectUrl);
-  //     })
-  //   ).subscribe();
-  // }
 
 }

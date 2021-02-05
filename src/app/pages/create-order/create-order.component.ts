@@ -6,7 +6,8 @@ import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { Customer } from 'src/app/shared/models/customer.model';
 import { Material } from 'src/app/shared/models/material.model';
-import { OrderFile } from 'src/app/shared/models/order-file.model';
+import { FileUpload, OrderFile } from 'src/app/shared/models/order-file.model';
+import { OrderApiService } from 'src/app/shared/services/order-api.service';
 import { CustomerSelectors } from 'src/app/state/customer/selectors';
 import { FileActions } from 'src/app/state/file/actions';
 import { FileSelectors } from 'src/app/state/file/selectors';
@@ -24,7 +25,7 @@ export class CreateOrderComponent implements OnInit {
 
   public materials$: Observable<Material[]>;
 
-  public orderFiles$: Observable<OrderFile[]> = of([]);
+  public fileUploads$: Observable<FileUpload[]>;
 
   public formGroup:FormGroup = new FormGroup({
     name: new FormControl('',[
@@ -44,12 +45,14 @@ export class CreateOrderComponent implements OnInit {
 
   constructor(
     private store: Store,
+    private orderApiService: OrderApiService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.customers$ = this.store.select(CustomerSelectors.GetCustomers);
     this.materials$ = this.store.select(MaterialSelectors.GetMaterials);
+    this.fileUploads$ = this.store.select(FileSelectors.GetFileUploads);
   }
 
   createOrder(){
@@ -58,8 +61,9 @@ export class CreateOrderComponent implements OnInit {
     }))
   }
 
-  uploadFile(file: File) {
-    this.store.dispatch(FileActions.UploadFile({file}))
+  fileUploadComplete(fileUpload: FileUpload) {
+    console.log("file UPLOADED",fileUpload)
+    this.store.dispatch(FileActions.RegisterFileUpload({fileUpload}))
   }
 
   removeFile(event){

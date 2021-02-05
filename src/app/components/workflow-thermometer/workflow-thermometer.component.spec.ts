@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThermometerComponent } from './thermometer.component';
+import { ThermometerComponent } from './workflow-thermometer.component';
 
 describe('ThermometerComponent', () => {
   let component: ThermometerComponent;

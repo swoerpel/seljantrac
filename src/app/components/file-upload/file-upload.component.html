@@ -1,18 +1,28 @@
-<!-- <input type="file" (change)="uploadFile($event)">
-<button (click)="downloadFile()">download</button> -->
-
-<div class="file-list">
+<div class="list">
     <ng-container *ngFor="let file of files">
-        file list
+        <div class="list list__item">
+            <div class="list list__item list__item__name">{{file?.name}}</div>
+            <mat-icon (click)="removeFile(file)" class="remove-circle">remove_circle_outline</mat-icon>
+        </div>
     </ng-container>
 </div>
 
-<mat-form-field class="upload-input-field" (click)="fileInput.click()">
-    <mat-label>Upload file</mat-label>
-    <input class="upload-input" matInput disabled>
-    <button mat-icon-button matSuffix><mat-icon>attach_file</mat-icon></button>
-    <input hidden (change)="uploadFile($event)" #fileInput type="file" id="file">
-</mat-form-field>
+<div class="file-upload">
+    <mat-form-field class="u-margin-right-s" (click)="fileInput.click()">
+        <mat-label>Upload file</mat-label>
+        <input class="upload-input" matInput disabled>
+        <button mat-icon-button matSuffix><mat-icon>attach_file</mat-icon></button>
+        <input (click)="uploadFileClick()" 
+               (change)="uploadFile($event)" 
+               [formControl]="fileFormControl"
+               hidden 
+               #fileInput 
+               type="file" 
+               id="file">
+    </mat-form-field>
+    <app-progress-bar *ngIf="displayProgressBar" [progress]="progress" ></app-progress-bar>
+</div>
+
 
 
 

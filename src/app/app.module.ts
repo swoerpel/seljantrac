@@ -34,10 +34,11 @@ import { ViewOrderComponent } from './pages/view-order/view-order.component';
 import { EditListComponent } from './components/edit-list/edit-list.component';
 import { workflowReducer } from './state/workflow/workflow.reducer';
 import { WorkflowEffects } from './state/workflow/workflow.effects';
-import { ThermometerComponent } from './components/thermometer/thermometer.component';
+import { WorkflowThermometerComponent } from './components/workflow-thermometer/workflow-thermometer.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { fileReducer } from './state/file/file.reducer';
 import { FileEffects } from './state/file/file.effects';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
 const stateSlices = {
   user: userReducer,
@@ -74,8 +75,9 @@ const stateEffects = [
     SnackbarErrorComponent,
     ViewOrderComponent,
     EditListComponent,
-    ThermometerComponent,
+    WorkflowThermometerComponent,
     FileUploadComponent,
+    ProgressBarComponent,
   ],
   imports: [
     BrowserModule,

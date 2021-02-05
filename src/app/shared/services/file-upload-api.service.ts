@@ -27,13 +27,15 @@ export class FileApiService {
     private http: HttpClient
   ) {}
 
-  uploadFile(file): FileUploadResponse {
-    const fileRef = this.storage.refFromURL(`${this.FILE_PATH}`);
-    const task = this.storage.upload('/seljantrac/temp_text', file);
+  uploadFile(file,fileId): FileUploadResponse {
+    const task = this.storage.upload(`/seljantrac/${fileId}`, file);
     return {
       uploadPercentage$: task.percentageChanges(),
       done$: task.snapshotChanges().pipe(
-        finalize(() => fileRef.getDownloadURL()))
+        finalize(() => {
+          const fileRef = this.storage.refFromURL(`${this.FILE_PATH}`);
+          return fileRef.getDownloadURL();
+        }))
     };
     // // observe percentage changes
     // this.uploadPercent = task.percentageChanges();

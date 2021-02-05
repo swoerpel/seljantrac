@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { FileActions } from "./actions";
 import { uid } from "uid";
-import { OrderFile } from "src/app/shared/models/order-file.model";
+import { FileUpload, OrderFile } from "src/app/shared/models/order-file.model";
 import { Observable, of } from "rxjs";
 
 export interface FFile extends File {
@@ -11,20 +11,19 @@ export interface FFile extends File {
 export interface FileState {
     // Storing this means we have access to all files
     // if multiple file uploads
-    files: {[key:string]:string};
+    fileUploads: FileUpload[];
 }
 
 const initialState: FileState = {
-    files: {},
+    fileUploads: [],
 }
 
 export const fileReducer = createReducer<FileState>(
     initialState,
-    on(FileActions.UploadFile, (state, action): FileState => {
-        console.log('action in reducer',action)
+    on(FileActions.RegisterFileUpload, (state, action): FileState => {
         return {
             ...state,
-            // files: {...state.files,[uid(4)]:action.file.name}
+            fileUploads: [...state.fileUploads,action.fileUpload]
         }
     }),
 

@@ -6,6 +6,7 @@ import { ROUTER_NAVIGATED } from "@ngrx/router-store";
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 import { catchError, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { FileUpload } from "src/app/shared/models/order-file.model";
 import { Order } from "src/app/shared/models/order.model";
 import { OrderWorkflow } from "src/app/shared/models/Workflow.model";
 import { OrderApiService } from "src/app/shared/services/order-api.service";
@@ -13,6 +14,7 @@ import { WorkflowApiService } from "src/app/shared/services/workflow-api.service
 import { UserSelectors } from "../user/selectors";
 import { WorkflowApiActions, WorkflowPageActions } from "../workflow/actions";
 import { OrderApiActions, OrderPageActions, OrderRouterActions } from "./actions";
+import { OrderSelectors } from "./selectors";
 
 @Injectable({
     providedIn: 'root'
@@ -75,6 +77,23 @@ export class OrderEffects {
                         OrderApiActions.CreateOrderWorkflow({orderId:order.id}),
                     ]),
                     catchError((err)=>of(OrderApiActions.CreateOrderError({err})))
+                )
+            })
+        )   
+    });
+
+    addOrderFile$ = createEffect((): any => {
+        return this.actions$.pipe(
+            ofType(OrderPageActions.AddOrderFile),
+            map(p=>p.fileUpload),
+            withLatestFrom(this.store.select(OrderSelectors.GetSelectedOrderId)),
+            switchMap(([fileUpload, orderId]: [FileUpload,string]) => {
+                return this.orderApiService.addFileToOrder(fileUpload,orderId).pipe(
+                    map((res)=>{
+                        console.log('res',res)
+                        return OrderApiActions.AddOrderFileSuccess();
+                    }),
+                    catchError((err)=>of(OrderApiActions.AddOrderFileError({err})))
                 )
             })
         )   

@@ -1,11 +1,12 @@
 import {createAction, props} from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { FileUpload } from 'src/app/shared/models/order-file.model';
 
-export const UploadFile = createAction(
-    '[File Upload] Upload File',
-    props<{file: File}>()
+export const RegisterFileUpload = createAction(
+    '[File Upload] Register File Upload',
+    props<{fileUpload: FileUpload}>()
 )
-export const Default = createAction(
-    '[File Upload] Default',
+export const ClearRegisteredFiles = createAction(
+    '[File Upload] Clear Registered Files',
 )
 

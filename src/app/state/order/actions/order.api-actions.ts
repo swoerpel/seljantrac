@@ -25,3 +25,13 @@ export const CreateOrderWorkflow = createAction(
     '[Order Api] Create Order Workflow',
     props<{orderId: string}>()
 )
+
+export const AddOrderFileSuccess = createAction(
+    '[Order Api] Add Order File Success',
+    // props<{orderId: string}>()
+)
+
+export const AddOrderFileError = createAction(
+    '[Order Api] Add Order File Error',
+    props<{err: any}>()
+)

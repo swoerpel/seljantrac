@@ -36,11 +36,11 @@
     <textarea [formControl]="formGroup.controls.notes" matInput></textarea>
 </mat-form-field>
 
-<ng-container *ngIf="(orderFiles$ | async) as orderFiles">
+<ng-container *ngIf="(fileUploads$ | async) as fileUploads">
   <app-file-upload 
-    (upload)="uploadFile($event)"
+    (uploadComplete)="fileUploadComplete($event)"
     (remove)="removeFile($event)"
-    [files]="orderFiles"
+    [files]="fileUploads"
   ></app-file-upload>
 </ng-container>
 

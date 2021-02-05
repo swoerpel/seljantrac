@@ -1,12 +1,51 @@
 :host{
     display: flex;
     flex-direction: column;
+    width: 50%;
 }
 
 .upload-input{
     cursor: pointer;
 }
 
-.upload-input-field{
-    width: 33%;
+.list{
+
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    &__item{
+        flex-direction: row;
+        padding: var(--xs);
+        // justify-content: space-between;
+        background-color: var(--color-light);
+        color: var(--color-dark);
+        border-radius: 5px;
+        justify-content: flex-start;
+        align-items: center;
+        &__name{
+            font-size: var(--m);
+        }
+
+    }
+
+
+
+}
+
+.file-upload{
+    display: flex;
+    align-items: center;
+}
+
+.remove-circle{
+    padding-right: var(--s);
+    font-size: var(--l);
+    color: red;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
 }

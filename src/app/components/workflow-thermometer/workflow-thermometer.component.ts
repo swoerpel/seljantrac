@@ -12,19 +12,17 @@ interface DateColumn {
 }
 
 @Component({
-  selector: 'app-thermometer',
-  templateUrl: './thermometer.component.html',
-  styleUrls: ['./thermometer.component.scss']
+  selector: 'app-workflow-thermometer',
+  templateUrl: './workflow-thermometer.component.html',
+  styleUrls: ['./workflow-thermometer.component.scss']
 })
-export class ThermometerComponent implements OnInit {
+export class WorkflowThermometerComponent implements OnInit {
 
   @Input() workflowSteps: string[] = DEFAULT_WORKFLOW_STEP_STRINGS;
   @Input() orderWorkflow: OrderWorkflow;
   @Output() advance: EventEmitter<string> = new EventEmitter();
   @Output() revert: EventEmitter<string> = new EventEmitter();
 
-  public barHeight = 20;
-  public barFill = 'var(--color-accent)';
   public percentFilled: any;
 
   public furthestStep: string;

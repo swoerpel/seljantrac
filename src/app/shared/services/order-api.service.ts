@@ -1,15 +1,16 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore, DocumentReference } from "@angular/fire/firestore";
 import { Store } from "@ngrx/store";
-import { from, Observable } from "rxjs";
+import { from, Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { Order } from "../models/order.model";
-import { head, last} from 'lodash';
+import { head, last, omit} from 'lodash';
 import { formatDate } from "@angular/common";
 import { DEFAULT_LOCALE, SHORT_DATE_FORMAT } from "../constants/date.constants";
 import { uid } from 'uid';
 import * as firebase from 'firebase/app';
 import { WorkflowStepType } from "../enums/workflow.enum";
+import { FileUpload } from "../models/order-file.model";
 
 @Injectable({
     providedIn: 'root'
@@ -46,6 +47,18 @@ export class OrderApiService {
 
     public deleteOrder(orderId: string){
 
+    }
+
+    public addFileToOrder(fileUpload:FileUpload, orderId:string): Observable<any>{
+
+        return of(null);
+        // return from(
+        //     this.db.collection<any>('orders')
+        //         .doc(orderId)
+        //         .collection('files')
+        //         .doc(fileUpload.fileId)
+        //         .set(omit(fileUpload,'fileId'))
+        //     )
     }
 
 }
